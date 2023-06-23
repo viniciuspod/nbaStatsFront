@@ -1,28 +1,36 @@
-import React, { Component } from 'react';
-import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { Component } from "react";
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Players from "./components/Players";
 
-import { Divider } from "@mui/material";
-import Header from './components/ContainerHeader'
-import Main from './components/ContainerMain'
-import Footer from './components/ContainerFooter';
+import { Divider, Switch } from "@mui/material";
+import Header from "./components/ContainerHeader";
+import Main from "./components/ContainerMain";
+import Footer from "./components/ContainerFooter";
+import { Route, Router } from "react-router-dom";
 
 class App extends Component {
-
-  render (){
+  render() {
     return (
-      <div className="App">
-        <header>
-          <Header />
-        </header>
-        <main>
-          <Divider/>
-          <Main />
-        </main>
-        <footer>       
-          <Footer/>
-        </footer>
-      </div>
+      <Router>
+        <div className="App">
+          <header>
+            <Header />
+          </header>
+          <main>
+            <Switch>
+              <Route path="/players" > 
+                <Players />
+              </Route>
+            </Switch>
+            <Divider />
+            <Main />
+          </main>
+          <footer>
+            <Footer />
+          </footer>
+        </div>
+      </Router>
     );
   }
 }
