@@ -4,6 +4,8 @@ import React from "react";
 import BasicCard from "./BasicCard";
 import { makeStyles } from "@mui/styles";
 import ContainerChartLine from "./ContainerChartLine";
+import { Typography } from "@mui/material";
+import { Sheet } from "@mui/joy";
 
 const useStyles = makeStyles((theme) => ({
   scrollbar: {
@@ -77,60 +79,44 @@ const ContainerMain = () => {
           </Box>
         </Box>
         <Grid container spacing={2} pt={2}>
-          <Grid item xs={6}>
-            <Box
-              sx={{
+          <Grid item xs={12} sm={6}>
+            <Box sx={{
                 p: 2,
-              }}
-            >
-              <ContainerChartLine />
-            </Box>
-          </Grid>
-          <Grid item xs={6}>
-            <Box
+                maxWidth:'100%'
+              }} >
+            <Sheet variant="outlined"
               sx={{
+                backgroundColor: "#1A202C" ,
                 p: 2,
-              }}
-            >
-              <ContainerChartLine />
+                borderRadius: "sm",
+                maxWidth:'100%'
+              }} >
+              <Typography sx={{color: "#fff", p:1, fontSize:"1.2rem", fontWeight: 600}}>
+                Chart of denver games
+              </Typography>
+                <ContainerChartLine />
+            </Sheet>
             </Box>
-          </Grid>
-          <Grid item xs={6}>
-            <Box
+          </Grid>   
+          <Grid item xs={12} sm={6}>
+            <Box sx={{
+                p: 2,
+                maxWidth:'100%'
+              }} >
+            <Sheet variant="outlined"
               sx={{
+                backgroundColor: "#1A202C" ,
                 p: 2,
-              }}
-            >
-              <ContainerChartLine />
+                borderRadius: "sm",
+                maxWidth:'100%'
+              }} >
+              <Typography sx={{color: "#fff", p:1, fontSize:"1.2rem", fontWeight: 600}}>
+                Chart of denver games
+              </Typography>
+                <ContainerChartLine />
+            </Sheet>
             </Box>
-          </Grid>
-          <Grid item xs={6}>
-            <Box
-              sx={{
-                p: 2,
-              }}
-            >
-              <ContainerChartLine />
-            </Box>
-          </Grid>
-          <Grid item xs={6}>
-            <Box
-              sx={{
-                p: 2,
-              }}
-            >
-              <ContainerChartLine />
-            </Box>
-          </Grid>
-          <Grid item xs={6}>
-            <Box
-              sx={{
-                p: 2,
-              }}
-            >
-              <ContainerChartLine />
-            </Box>
-          </Grid>                    
+          </Grid>                          
         </Grid>
       </Container>
     </div>
