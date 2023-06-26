@@ -102,6 +102,7 @@ function Containereader() {
               >
                 {pages.map((page) => (
                   <Link
+                    key={page}
                     to={`/${page.toLowerCase()}`}
                     style={{ textDecoration: "none", color: "#000000" }}
                   >
@@ -138,11 +139,11 @@ function Containereader() {
             >
               {pages.map((page) => (
                 <Link
+                  key={page}
                   to={`/${page.toLowerCase()}`}
                   style={{ textDecoration: "none", color: "#81c784" }}
                 >
                   <Button
-                    key={page}
                     onClick={handleCloseNavMenu}
                     sx={{ my: 2, color: "#81c784", display: "block" }}
                   >

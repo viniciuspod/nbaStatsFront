@@ -9,7 +9,7 @@ import { Divider } from "@mui/material";
 import { Sheet } from "@mui/joy";
 import ClearIcon from "@mui/icons-material/Clear";
 
-export default function BasicCard() {
+export default function BasicCard(props) {
   return (
     <Card variant="outlined" sx={{ width: 320 }}>
       <Box

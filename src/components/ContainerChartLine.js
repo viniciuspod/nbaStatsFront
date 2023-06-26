@@ -86,6 +86,7 @@ const ContainerChart = () => {
 
   return (
     <Sheet
+      key="chart-sheet"
       variant="outlined"
       sx={{
         minWidth: "auto",
@@ -98,7 +99,7 @@ const ContainerChart = () => {
         options={options}
         series={series}
         type="line"
-      />
+    ></ReactApexChart>
     </Sheet>
   );
 };

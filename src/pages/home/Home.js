@@ -31,9 +31,39 @@ const useStyles = makeStyles((theme) => ({
 
 const Home = () => {
   const classes = useStyles();
+  const [games, setGames] = React.useState([]);
+
+  const url = "http://localhost:8080/nbaStatsApi/api/v1/games/search";
+  const startDate = "2023-06-01";
+  const endDate = "2023-06-12";
+  const requestBody = {
+    startDate: startDate,
+    endDate: endDate,
+  };
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestBody),
+        });
+        const data = await response.json();
+        console.log(data.data);
+        setGames(data.data); // Atualiza o estado com os dados obtidos da API
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, []); 
 
   return (
-    <div style={{ backgroundColor: "#1A202C" }}>
+    <div>
       <Container maxWidth="xl">
         <Box
           className={classes.scrollbar}
@@ -44,41 +74,16 @@ const Home = () => {
             display: "flex",
           }}
         >
-          <Box
-            sx={{
-              p: 2,
-            }}
-          >
-            <BasicCard />
-          </Box>
-          <Box
-            sx={{
-              p: 2,
-            }}
-          >
-            <BasicCard />
-          </Box>
-          <Box
-            sx={{
-              p: 2,
-            }}
-          >
-            <BasicCard />
-          </Box>
-          <Box
-            sx={{
-              p: 2,
-            }}
-          >
-            <BasicCard />
-          </Box>
-          <Box
-            sx={{
-              p: 2,
-            }}
-          >
-            <BasicCard />
-          </Box>
+          {games.map((game) => (
+            <Box
+              key={game.id}
+              sx={{
+                p: 2,
+              }}
+            >
+              <BasicCard data={game} />
+            </Box>
+          ))}
         </Box>
         <Grid container spacing={2} pt={2}>
           <Grid item xs={12} sm={6}>
@@ -142,14 +147,14 @@ const Home = () => {
             </Box>
           </Grid>
         </Grid>
-        <Divider sx={{backgroundColor: "#fff", mt: 2}} />
+        <Divider sx={{ backgroundColor: "#fff", mt: 2 }} />
         <Grid container spacing={1} pt={2}>
           <Grid item xs={12}>
             <Box
               sx={{
                 p: 2,
                 maxWidth: "100%",
-                overflow: "auto"
+                overflow: "auto",
               }}
             >
               <Sheet
@@ -160,10 +165,9 @@ const Home = () => {
                   borderRadius: "sm",
                   maxWidth: "100%",
                 }}
-                
               >
-                <ContainerTable/>
-              </Sheet>              
+                <ContainerTable />
+              </Sheet>
             </Box>
           </Grid>
         </Grid>
