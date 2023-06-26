@@ -1,13 +1,17 @@
 import React, { Component } from "react";
 import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-import Players from "./components/Players";
-
-import { Divider, Switch } from "@mui/material";
 import Header from "./components/ContainerHeader";
-import Main from "./components/ContainerMain";
+import Home from "./pages/home/Home";
 import Footer from "./components/ContainerFooter";
-import { Route, Router } from "react-router-dom";
+import Players from "./pages/players/Players";
+import Teams from "./pages/teams/Teams"
+import Averages from "./pages/averages/Averages";
+import Games from "./pages/games/Games"
+import Stats from "./pages/stats/Stats";
+
+import { Divider } from "@mui/material";
+import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 class App extends Component {
   render() {
@@ -18,13 +22,15 @@ class App extends Component {
             <Header />
           </header>
           <main>
-            <Switch>
-              <Route path="/players" > 
-                <Players />
-              </Route>
-            </Switch>
-            <Divider />
-            <Main />
+            <Divider/>
+            <Routes>
+              <Route path="/players" element={<Players />}></Route>
+              <Route path="/teams" element={<Teams />}></Route>
+              <Route path="/averages" element={<Averages />}></Route>
+              <Route path="/games" element={<Games />}></Route>
+              <Route path="/stats" element={<Stats />}></Route>
+              <Route path="/" element={<Home />}></Route>
+            </Routes>
           </main>
           <footer>
             <Footer />

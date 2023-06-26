@@ -1,9 +1,9 @@
 import * as React from "react";
+import Image1Denver from "../img/Denver-Nuggets-Logo_adobe_express.svg";
+
 import AspectRatio from "@mui/joy/AspectRatio";
 import Card from "@mui/joy/Card";
-import CardContent from "@mui/joy/CardContent";
 import Typography from "@mui/joy/Typography";
-import Image1Denver from "../img/Denver-Nuggets-Logo_adobe_express.svg";
 import { Box } from "@mui/system";
 import { Divider } from "@mui/material";
 import { Sheet } from "@mui/joy";

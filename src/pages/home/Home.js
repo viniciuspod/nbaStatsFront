@@ -1,12 +1,13 @@
+import React from "react";
+import ContainerChartLine from "../../components/ContainerChartLine";
+import BasicCard from "../../components/BasicCard";
+import ContainerTable from "../../components/ContainerTable";
+
 import { Box, Divider, Grid } from "@mui/material";
 import { Container } from "@mui/system";
-import React from "react";
-import BasicCard from "./BasicCard";
 import { makeStyles } from "@mui/styles";
-import ContainerChartLine from "./ContainerChartLine";
 import { Typography } from "@mui/material";
 import { Sheet } from "@mui/joy";
-import ContainerTable from "./ContainerTable";
 
 const useStyles = makeStyles((theme) => ({
   scrollbar: {
@@ -28,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ContainerMain = () => {
+const Home = () => {
   const classes = useStyles();
 
   return (
@@ -171,4 +172,4 @@ const ContainerMain = () => {
   );
 };
 
-export default ContainerMain;
+export default Home;

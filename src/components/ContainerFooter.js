@@ -1,5 +1,6 @@
 import React from "react";
-import { Divider, Box, Grid, Typography } from "@mui/material";
+
+import { Box, Grid, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 
 const ContainerFooter = () => {

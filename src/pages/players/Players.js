@@ -2,7 +2,7 @@ import React from 'react'
 
 const Players = () => {
   return (
-    <div>Players</div>
+    <h1>Players</h1>
   )
 }
 

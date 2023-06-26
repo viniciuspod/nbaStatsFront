@@ -1,5 +1,4 @@
 import * as React from "react";
-import Players from "./Players";
 
 import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
@@ -16,7 +15,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-const pages = ["Players", "Teams", "Games", "Stats", "Season Averages"];
+const pages = ["Players", "Teams", "Games", "Stats", "Averages"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function Containereader() {
@@ -57,8 +56,8 @@ function Containereader() {
             <Typography
               variant="h6"
               noWrap
-              component="a"
-              href="/"
+              component={Link}
+              to="/"
               sx={{
                 mr: 2,
                 display: { xs: "none", md: "flex" },
@@ -103,7 +102,14 @@ function Containereader() {
               >
                 {pages.map((page) => (
                   <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">{page}</Typography>
+                    <Typography textAlign="center">
+                      <Link
+                        to={`/${page.toLowerCase()}`}
+                        style={{ textDecoration: "none", color: "#000000" }}
+                      >
+                        {page}
+                      </Link>
+                    </Typography>
                   </MenuItem>
                 ))}
               </Menu>
@@ -111,8 +117,8 @@ function Containereader() {
             <Typography
               variant="h5"
               noWrap
-              component="a"
-              href=""
+              component={Link}
+              to="/"
               sx={{
                 mr: 2,
                 display: { xs: "flex", md: "none" },

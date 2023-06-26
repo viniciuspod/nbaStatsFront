@@ -1,7 +1,7 @@
 import React from "react";
+
 import { Sheet } from "@mui/joy";
 import ReactApexChart from "react-apexcharts";
-import { width } from "@mui/system";
 
 const ContainerChart = () => {
   const series = [
