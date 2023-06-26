@@ -17,12 +17,12 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div className="App">
+        <div  style={{ display: "flex", flexDirection: "column", minHeight: "100vh", backgroundColor:"#1A202C"}}>
           <header>
             <Header />
           </header>
-          <main>
-            <Divider/>
+          <main style={{ flex: 1 }}>
+            <Divider sx={{backgroundColor:"#fff"}} />
             <Routes>
               <Route path="/players" element={<Players />}></Route>
               <Route path="/teams" element={<Teams />}></Route>
