@@ -101,16 +101,14 @@ function Containereader() {
                 }}
               >
                 {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">
-                      <Link
-                        to={`/${page.toLowerCase()}`}
-                        style={{ textDecoration: "none", color: "#000000" }}
-                      >
-                        {page}
-                      </Link>
-                    </Typography>
-                  </MenuItem>
+                  <Link
+                    to={`/${page.toLowerCase()}`}
+                    style={{ textDecoration: "none", color: "#000000" }}
+                  >
+                    <MenuItem key={page} onClick={handleCloseNavMenu}>
+                      <Typography textAlign="center">{page}</Typography>
+                    </MenuItem>
+                  </Link>
                 ))}
               </Menu>
             </Box>
@@ -139,18 +137,18 @@ function Containereader() {
               }}
             >
               {pages.map((page) => (
-                <Button
-                  key={page}
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "#81c784", display: "block" }}
+                <Link
+                  to={`/${page.toLowerCase()}`}
+                  style={{ textDecoration: "none", color: "#81c784" }}
                 >
-                  <Link
-                    to={`/${page.toLowerCase()}`}
-                    style={{ textDecoration: "none", color: "#81c784" }}
+                  <Button
+                    key={page}
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: "#81c784", display: "block" }}
                   >
                     {page}
-                  </Link>
-                </Button>
+                  </Button>
+                </Link>
               ))}
             </Box>
 
