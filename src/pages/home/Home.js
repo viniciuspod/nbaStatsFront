@@ -32,32 +32,56 @@ const useStyles = makeStyles((theme) => ({
 const Home = () => {
   const classes = useStyles();
   const [isLoading, setIsLoading] = React.useState(true);
-  const [games, setGames] = React.useState([]);
+  const [games, setGamesCard] = React.useState([]);  
+  const [statsChart1, setStatsChart1] = React.useState([]);  
+  const [error, setError] = React.useState(null);
 
-  const url = "http://localhost:8080/nbaStatsApi/api/v1/games/search";
+  const urlCard = "http://localhost:8080/nbaStatsApi/api/v1/games/search";
+  const urlChart= "http://localhost:8080/nbaStatsApi/api/v1/stats/search";
   const startDate = "2023-06-01";
   const endDate = "2023-06-12";
-  const requestBody = {
+  const requestBodyCard = {
     startDate: startDate,
     endDate: endDate,
+  };
+  const seasons = [2022];
+  const playersIds = [246,79];
+  const requestBodyChart = {
+    startDate: startDate,
+    endDate: endDate,
+    playersIds: playersIds,
+    seasons: seasons
   };
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch(url, {
+        const responseCard = await fetch(urlCard, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(requestBody),
+          body: JSON.stringify(requestBodyCard),
         });
-        const data = await response.json();
-        console.log(data.data);
-        setGames(data.data);
+        const dataCard = await responseCard.json();
+        console.log(dataCard.data);
+        setGamesCard(dataCard.data);
+
+        const responseChart1 = await fetch(urlChart, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestBodyChart),
+        });
+        const dataChart1 = await responseChart1.json();
+        console.log(dataChart1.data);
+        setStatsChart1(dataChart1.data);
+
       } catch (error) {
         console.error(error);
+        setError("Ocorreu um erro ao buscar os logotipos das equipes.");
       } finally {
         setIsLoading(false);
       }
@@ -65,6 +89,10 @@ const Home = () => {
 
     fetchData();
   }, []);
+
+  if (error) {
+    return <Typography>{error}</Typography>;
+  }
 
   return (
     <div>
@@ -130,7 +158,7 @@ const Home = () => {
                 >
                   Chart of denver games
                 </Typography>
-                <ContainerChartLine />
+                <ContainerChartLine  data={statsChart1}/>
               </Sheet>
             </Box>
           </Grid>

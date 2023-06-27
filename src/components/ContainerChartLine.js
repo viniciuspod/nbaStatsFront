@@ -3,10 +3,18 @@ import React from "react";
 import { Sheet } from "@mui/joy";
 import ReactApexChart from "react-apexcharts";
 
-const ContainerChart = () => {
+const ContainerChart = (props) => {
+  console.log(props.data)
+
+  const player = props.data.map((player) => ({
+    pts: player.pts,
+  }));
+
+  console.log(player);
+  
   const series = [
     {
-      name: "Lebron",
+      name: "lebron",
       data: [10, 41, 35, 51, 49, 62, 69, 91, 148],
     },
     {
