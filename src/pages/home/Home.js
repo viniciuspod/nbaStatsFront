@@ -3,7 +3,7 @@ import ContainerChartLine from "../../components/ContainerChartLine";
 import BasicCard from "../../components/BasicCard";
 import ContainerTable from "../../components/ContainerTable";
 
-import { Box, Divider, Grid } from "@mui/material";
+import { Box, Divider, Grid, CircularProgress } from "@mui/material";
 import { Container } from "@mui/system";
 import { makeStyles } from "@mui/styles";
 import { Typography } from "@mui/material";
@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Home = () => {
   const classes = useStyles();
+  const [isLoading, setIsLoading] = React.useState(true);
   const [games, setGames] = React.useState([]);
 
   const url = "http://localhost:8080/nbaStatsApi/api/v1/games/search";
@@ -44,6 +45,7 @@ const Home = () => {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsLoading(true);
         const response = await fetch(url, {
           method: "POST",
           headers: {
@@ -53,38 +55,53 @@ const Home = () => {
         });
         const data = await response.json();
         console.log(data.data);
-        setGames(data.data); // Atualiza o estado com os dados obtidos da API
+        setGames(data.data);
       } catch (error) {
         console.error(error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchData();
-  }, []); 
+  }, []);
 
   return (
     <div>
       <Container maxWidth="xl">
-        <Box
-          className={classes.scrollbar}
-          pt={4}
-          sx={{
-            maxHeight: 400,
-            overflow: "auto",
-            display: "flex",
-          }}
-        >
-          {games.map((game) => (
+        <div>
+          {isLoading ? (
             <Box
-              key={game.id}
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              height={400}
+            >
+              <CircularProgress />
+            </Box>
+          ) : (
+            <Box
+              className={classes.scrollbar}
+              pt={4}
               sx={{
-                p: 2,
+                maxHeight: 400,
+                overflow: "auto",
+                display: "flex",
               }}
             >
-              <BasicCard data={game} />
+              {games.map((game) => (
+                <Box
+                  key={game.id}
+                  sx={{
+                    p: 2,
+                  }}
+                >
+                  <BasicCard data={game} />
+                </Box>
+              ))}
             </Box>
-          ))}
-        </Box>
+          )}
+        </div>
         <Grid container spacing={2} pt={2}>
           <Grid item xs={12} sm={6}>
             <Box

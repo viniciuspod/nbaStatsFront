@@ -1,19 +1,24 @@
 import * as React from "react";
 import Image1Denver from "../img/Denver-Nuggets-Logo_adobe_express.svg";
+import Image1Miami from "../img/Miami-Heat-logo_adobe_express.svg";
 
+import { format } from "date-fns";
 import AspectRatio from "@mui/joy/AspectRatio";
 import Card from "@mui/joy/Card";
 import Typography from "@mui/joy/Typography";
 import { Box } from "@mui/system";
-import { Divider } from "@mui/material";
 import { Sheet } from "@mui/joy";
 import ClearIcon from "@mui/icons-material/Clear";
 
 export default function BasicCard(props) {
+  console.log(props);
+
+  const formattedDate = format(new Date(props.data.date), "dd/MM/yyyy");
+
   return (
-    <Card variant="outlined" sx={{ width: 320 }}>
+    <Card variant="outlined" sx={{ minWidth: 320 }}>
       <Box
-        sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+        sx={{ display: "flex", flexDirection: "column", alignItems: "center"}}
       >
         <Sheet
           variant="outlined"
@@ -21,28 +26,37 @@ export default function BasicCard(props) {
             display: "flex",
             gap: 2,
             p: 2,
-            minWidth: 300,
             borderRadius: "sm",
           }}
         >
-          <Box
-            sx={{
-              flexBasis: "200px",
-              textAlign: "center",
-            }}
-          >
-            <AspectRatio
+          <Box sx={{ display: "flex", alignItems: "center"}}>
+            <Box
               sx={{
-                borderRadius: "sm",
-                overflow: "auto",
+                textAlign: "center",
               }}
             >
-              <img src={Image1Denver} />
-            </AspectRatio>
-            <Divider />
-            <Typography fontSize="lg" fontWeight="lg">
-              Denver Nuggets
-            </Typography>
+              <AspectRatio
+                sx={{
+                  borderRadius: "sm",
+                  minWidth: 75
+                }}
+              >
+                <img src={Image1Denver} />
+              </AspectRatio>
+
+              <Typography fontSize="lg" fontWeight="lg">
+                {props.data.home_team.full_name}
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                textAlign: "center",
+              }}
+            >
+              <Typography fontSize="large" fontWeight="lg" sx={{p:2}}>
+                {props.data.home_team_score}
+              </Typography>
+            </Box>
           </Box>
           <div style={{ display: "flex", alignItems: "center" }}>
             <ClearIcon
@@ -52,26 +66,39 @@ export default function BasicCard(props) {
               }}
             ></ClearIcon>
           </div>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
           <Box
-            sx={{
-              flexBasis: "200px",
-              textAlign: "center",
-            }}
-          >
-            <AspectRatio
               sx={{
-                borderRadius: "sm",
-                overflow: "auto",
+                textAlign: "center",
               }}
             >
-              <img src={Image1Denver} />
-            </AspectRatio>
-            <Divider />
-            <Typography fontSize="lg" fontWeight="lg">
-              Denver Nuggets
-            </Typography>
+              <Typography fontSize="large" fontWeight="lg" sx={{p:2}}>
+                {props.data.visitor_team_score}
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                textAlign: "center",
+              }}
+            >
+              <AspectRatio
+                sx={{
+                  borderRadius: "sm",
+                  minWidth: 75
+                }}
+              >
+                <img src={Image1Miami} />
+              </AspectRatio>
+
+              <Typography fontSize="lg" fontWeight="lg">
+                {props.data.visitor_team.full_name}
+              </Typography>
+            </Box>
           </Box>
         </Sheet>
+        <Typography variant="caption" sx={{ marginLeft: "auto" }}>
+          {formattedDate}
+        </Typography>
       </Box>
     </Card>
   );
