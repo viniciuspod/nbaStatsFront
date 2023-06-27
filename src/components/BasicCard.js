@@ -1,6 +1,5 @@
 import * as React from "react";
-import Image1Denver from "../img/Denver-Nuggets-Logo_adobe_express.svg";
-import Image1Miami from "../img/Miami-Heat-logo_adobe_express.svg";
+import SVGImage from "./SVGImage";
 
 import { format } from "date-fns";
 import AspectRatio from "@mui/joy/AspectRatio";
@@ -11,9 +10,38 @@ import { Sheet } from "@mui/joy";
 import ClearIcon from "@mui/icons-material/Clear";
 
 export default function BasicCard(props) {
-  console.log(props);
 
+  const [logoTeamHome, setLogoTeamHome] = React.useState([]);
+  const [logoTeamVisitor, setLogoTeamVisitor] = React.useState([]);
+  const [error, setError] = React.useState(null);
   const formattedDate = format(new Date(props.data.date), "dd/MM/yyyy");
+
+  const urlHome = `http://localhost:8080/nbaStatsApi/api/v1/teams/search/logo/${props.data.home_team.id}`;
+  const urlVisitor = `http://localhost:8080/nbaStatsApi/api/v1/teams/search/logo/${props.data.visitor_team.id}`;
+
+  React.useEffect(() => {
+    const fetchLogos = async () => {
+      try {
+  
+        const homeResponse = await fetch(urlHome, { method: "GET" });
+        const homeData = await homeResponse.json();
+        setLogoTeamHome(homeData);
+  
+        const visitorResponse = await fetch(urlVisitor, { method: "GET" });
+        const visitorData = await visitorResponse.json();
+        setLogoTeamVisitor(visitorData);
+      } catch (error) {
+        console.error(error);
+        setError("Ocorreu um erro ao buscar os logotipos das equipes.");
+      } 
+    };
+  
+    fetchLogos();
+  }, []); 
+
+  if (error) {
+    return <Typography>{error}</Typography>;
+  }
 
   return (
     <Card variant="outlined" sx={{ minWidth: 320 }}>
@@ -41,7 +69,7 @@ export default function BasicCard(props) {
                   minWidth: 75
                 }}
               >
-                <img src={Image1Denver} />
+                <SVGImage svgString={logoTeamHome.imageSvg}/>
               </AspectRatio>
 
               <Typography fontSize="lg" fontWeight="lg">
@@ -87,7 +115,7 @@ export default function BasicCard(props) {
                   minWidth: 75
                 }}
               >
-                <img src={Image1Miami} />
+                <SVGImage svgString={logoTeamVisitor.imageSvg}/>
               </AspectRatio>
 
               <Typography fontSize="lg" fontWeight="lg">
