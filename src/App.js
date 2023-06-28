@@ -26,6 +26,7 @@ class App extends Component {
             <Routes>
               <Route path="/players" element={<Players />}></Route>
               <Route path="/teams" element={<Teams />}></Route>
+              <Route path="/teams/:id" element={<Teams />}></Route>
               <Route path="/averages" element={<Averages />}></Route>
               <Route path="/games" element={<Games />}></Route>
               <Route path="/stats" element={<Stats />}></Route>

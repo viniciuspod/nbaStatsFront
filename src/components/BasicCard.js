@@ -1,7 +1,7 @@
 import * as React from "react";
 import SVGImage from "./SVGImage";
 
-
+import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import { format } from "date-fns";
 import AspectRatio from "@mui/joy/AspectRatio";
@@ -52,117 +52,149 @@ export default function BasicCard(props) {
   }
 
   return (
-    <Card variant="outlined" sx={{ minWidth: 320 }}>
-      <Box
-        sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+    <Link to={"/games"} style={{ textDecoration: "none", color: "#000000" }}>
+      <Card
+        variant="outlined"
+        sx={{
+          minWidth: 320,
+          "&:hover": {
+            boxShadow: "10px 10px 15px #607d8b",
+            borderRadius: "15px",
+          },
+        }}
       >
-        <Sheet
-          variant="outlined"
+        <Box
           sx={{
             display: "flex",
-            gap: 2,
-            p: 2,
-            borderRadius: "sm",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
-          <div>
-            {isLoadingHome ? (
-              <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                height={400}
-              >
-                <CircularProgress />
-              </Box>
-            ) : (
-              <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Sheet
+            variant="outlined"
+            sx={{
+              display: "flex",
+              gap: 2,
+              p: 2,
+              borderRadius: "sm",
+            }}
+          >
+            <div>
+              {isLoadingHome ? (
                 <Box
-                  sx={{
-                    textAlign: "center",
-                  }}
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  height={400}
                 >
-                  <AspectRatio
+                  <CircularProgress />
+                </Box>
+              ) : (
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Link
+                    to={`/teams/${props.data.home_team.id}`}
+                    style={{ textDecoration: "none", color: "#000000" }}
+                  >
+                    <Box
+                      sx={{
+                        textAlign: "center",
+                        "&:hover": {
+                          boxShadow: "0 0 10px rgba(0, 0, 0, 0.5)",
+                          borderRadius: "15px",
+                        },
+                      }}
+                    >
+                      <AspectRatio
+                        sx={{
+                          borderRadius: "sm",
+                          minWidth: 75,
+                        }}
+                      >
+                        <SVGImage svgString={logoTeamHome.imageSvg} />
+                      </AspectRatio>
+
+                      <Typography fontSize="lg" fontWeight="lg">
+                        {props.data.home_team.full_name}
+                      </Typography>
+                    </Box>
+                  </Link>
+                  <Box
                     sx={{
-                      borderRadius: "sm",
-                      minWidth: 75,
+                      textAlign: "center",
                     }}
                   >
-                    <SVGImage svgString={logoTeamHome.imageSvg} />
-                  </AspectRatio>
-
-                  <Typography fontSize="lg" fontWeight="lg">
-                    {props.data.home_team.full_name}
-                  </Typography>
+                    <Typography fontSize="large" fontWeight="lg" sx={{ p: 2 }}>
+                      {props.data.home_team_score}
+                    </Typography>
+                  </Box>
                 </Box>
-
+              )}
+            </div>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <ClearIcon
+                fontSize="large"
+                sx={{
+                  marginTop: ".7rem",
+                }}
+              ></ClearIcon>
+            </div>
+            <div>
+              {isLoadingVisitor ? (
                 <Box
-                  sx={{
-                    textAlign: "center",
-                  }}
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  height={400}
                 >
-                  <Typography fontSize="large" fontWeight="lg" sx={{ p: 2 }}>
-                    {props.data.home_team_score}
-                  </Typography>
+                  <CircularProgress />
                 </Box>
-              </Box>
-            )}
-          </div>
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <ClearIcon
-              fontSize="large"
-              sx={{
-                marginTop: ".7rem",
-              }}
-            ></ClearIcon>
-          </div>
-          <div>
-            {isLoadingVisitor ? (
-              <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                height={400}
-              >
-                <CircularProgress />
-              </Box>
-            ) : (
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Box
-                  sx={{
-                    textAlign: "center",
-                  }}
-                >
-                  <Typography fontSize="large" fontWeight="lg" sx={{ p: 2 }}>
-                    {props.data.visitor_team_score}
-                  </Typography>
-                </Box>
-                <Box
-                  sx={{
-                    textAlign: "center",
-                  }}
-                >
-                  <AspectRatio
+              ) : (
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Box
                     sx={{
-                      borderRadius: "sm",
-                      minWidth: 75,
+                      textAlign: "center",
                     }}
                   >
-                    <SVGImage svgString={logoTeamVisitor.imageSvg} />
-                  </AspectRatio>
+                    <Typography fontSize="large" fontWeight="lg" sx={{ p: 2 }}>
+                      {props.data.visitor_team_score}
+                    </Typography>
+                  </Box>
+                  <Link
+                    to={`/teams/${props.data.visitor_team.id}`}
+                    style={{ textDecoration: "none", color: "#000000" }}
+                  >
+                    <Box
+                      sx={{
+                        textAlign: "center",
+                        "&:hover": {
+                          boxShadow: "0 0 10px rgba(0, 0, 0, 0.5)",
+                          borderRadius: "15px",
+                        },
+                      }}
+                    >
+                      <AspectRatio
+                        sx={{
+                          borderRadius: "sm",
+                          minWidth: 75,
+                        }}
+                      >
+                        <SVGImage svgString={logoTeamVisitor.imageSvg} />
+                      </AspectRatio>
 
-                  <Typography fontSize="lg" fontWeight="lg">
-                    {props.data.visitor_team.full_name}
-                  </Typography>
+                      <Typography fontSize="lg" fontWeight="lg">
+                        {props.data.visitor_team.full_name}
+                      </Typography>
+                    </Box>
+                  </Link>
                 </Box>
-              </Box>
-            )}
-          </div>
-        </Sheet>
-        <Typography variant="caption" sx={{ marginLeft: "auto" }}>
-          {formattedDate}
-        </Typography>
-      </Box>
-    </Card>
+              )}
+            </div>
+          </Sheet>
+          <Typography variant="caption" sx={{ marginLeft: "auto" }}>
+            {formattedDate}
+          </Typography>
+        </Box>
+      </Card>
+    </Link>
   );
 }

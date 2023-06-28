@@ -1,26 +1,69 @@
 import React from "react";
 
 import { Box, Container, Grid, Switch, Typography } from "@mui/material";
+import { useParams } from "react-router-dom";
+import { CircularProgress } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
 const Teams = () => {
-  const allTeams= [
-    {
-      label: "Lakers"
-    },
-    {
-      label: "Celtics"
-    },
-    {
-      label: "Spurs"
-    },
-    {
-      label: "Golden State"
-    },
-  ];
+
+  const { id } = useParams();
+
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [Teams, setTeams] = React.useState([]);
+  const [NameTeams, setNameTeams] = React.useState([]);
+  const [totalTeams, setTotalTeams] = React.useState([]);
+  const [page, setPage] = React.useState(1);
+  const [error, setError] = React.useState(null);
+  const [totalPages, setTotalPages] = React.useState(0);
+
+
+    const fetchTeams = async () => {
+      try {
+        setIsLoading(true);
+        const urlTeam = `http://localhost:8080/nbaStatsApi/api/v1/teams/search?page=${page}`;
+        const response = await fetch(urlTeam, {
+          method: "GET"
+        });
+        const data = await response.json();
+        console.log(data);
+        setTeams(prevTeams => [...prevTeams, ...data.data]);
+        setTotalPages(data.meta.total_pages);
+        setTotalTeams(data.meta.total_count);
+        setPage(page + 1);
+
+      } catch (error) {
+        console.error(error);
+        setError("Ocorreu um erro ao buscar os logotipos das equipes.");
+      } finally {
+        setIsLoading(false);
+      }
+    }; 
+  React.useEffect(() => {      
+      fetchTeams();
+  }, []);
+
+  React.useEffect(() => {
+    if (page <= totalPages) {      
+      fetchTeams();
+    }
+    if(Teams.length === totalTeams){
+      const team = Teams.map((team) => ({
+        label: team.full_name,
+      }));
+      setNameTeams(team);
+      console.log(NameTeams);
+    }
+  }, [page]);
+
+  if (error) {
+    return <Typography>{error}</Typography>;
+  }
+
+
 
   return (
     <div style={{ backgroundColor: "#1A202C" }}>
@@ -47,7 +90,7 @@ const Teams = () => {
                   }}
                   multiple
                   id="tags-filled"
-                  options={allTeams}
+                  options={NameTeams}
                   freeSolo
                   renderInput={(params) => (
                     <TextField
