@@ -2,26 +2,38 @@ import React from "react";
 
 import { Sheet } from "@mui/joy";
 import ReactApexChart from "react-apexcharts";
+import { format } from "date-fns";
 
 const ContainerChart = (props) => {
-  console.log(props.data)
+  const series = [];
+  const playerIds = [];
+  const gamesDate = [];
 
-  const player = props.data.map((player) => ({
-    pts: player.pts,
-  }));
+  props.data.forEach((item) => {
+    const formattedDate = format(new Date(item.game.date), "dd/MM/yyyy");
+    const dateIndex = gamesDate.indexOf(formattedDate);
+    const playerId = item.player.id;
+    const playerIndex = playerIds.indexOf(playerId);
 
-  console.log(player);
-  
-  const series = [
-    {
-      name: "lebron",
-      data: [10, 41, 35, 51, 49, 62, 69, 91, 148],
-    },
-    {
-      name: "Kobe",
-      data: [5, 20, 23, 41, 19, 52, 69, 71, 158],
-    },
-  ];
+    if (playerIndex === -1) {
+      // Player not found, add a new series entry
+      playerIds.push(playerId);
+      series.push({
+        name: item.player.last_name,
+        data: [item.pts],
+      });
+    } else {
+      // Player found, add the points to existing series
+      series[playerIndex].data.push(item.pts);
+    }
+    if (dateIndex === -1) {
+      // Player not found, add a new series entry
+      gamesDate.push(`game: ` + formattedDate);
+    }
+  });
+
+  console.log(gamesDate);
+  console.log(series);
 
   const options = {
     chart: {
@@ -44,17 +56,17 @@ const ContainerChart = (props) => {
       },
     },
     xaxis: {
-      categories: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-      ],
+      type: "category",
+      categories: gamesDate,
+      labels: {
+        rotate: -45,
+        formatter: function (value) {
+          if (value && value.length > 10) {
+            return value.substring(0, 11) + "...";
+          }
+          return value;
+        },
+      },
     },
     legend: {
       tooltipHoverFormatter: function (val, opts) {
@@ -100,14 +112,14 @@ const ContainerChart = (props) => {
         minWidth: "auto",
         minHeight: "auto",
         borderRadius: "sm",
-        maxWidth: '100%'
+        maxWidth: "100%",
       }}
     >
       <ReactApexChart
         options={options}
         series={series}
         type="line"
-    ></ReactApexChart>
+      ></ReactApexChart>
     </Sheet>
   );
 };

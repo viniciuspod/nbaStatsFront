@@ -32,12 +32,12 @@ const useStyles = makeStyles((theme) => ({
 const Home = () => {
   const classes = useStyles();
   const [isLoading, setIsLoading] = React.useState(true);
-  const [games, setGamesCard] = React.useState([]);  
-  const [statsChart1, setStatsChart1] = React.useState([]);  
+  const [games, setGamesCard] = React.useState([]);
+  const [statsChart1, setStatsChart1] = React.useState([]);
   const [error, setError] = React.useState(null);
 
   const urlCard = "http://localhost:8080/nbaStatsApi/api/v1/games/search";
-  const urlChart= "http://localhost:8080/nbaStatsApi/api/v1/stats/search";
+  const urlChart = "http://localhost:8080/nbaStatsApi/api/v1/stats/search";
   const startDate = "2023-06-01";
   const endDate = "2023-06-12";
   const requestBodyCard = {
@@ -45,12 +45,12 @@ const Home = () => {
     endDate: endDate,
   };
   const seasons = [2022];
-  const playersIds = [246,79];
+  const playersIds = [246, 79];
   const requestBodyChart = {
     startDate: startDate,
     endDate: endDate,
     playersIds: playersIds,
-    seasons: seasons
+    seasons: seasons,
   };
 
   React.useEffect(() => {
@@ -78,7 +78,6 @@ const Home = () => {
         const dataChart1 = await responseChart1.json();
         console.log(dataChart1.data);
         setStatsChart1(dataChart1.data);
-
       } catch (error) {
         console.error(error);
         setError("Ocorreu um erro ao buscar os logotipos das equipes.");
@@ -130,69 +129,89 @@ const Home = () => {
             </Box>
           )}
         </div>
-        
-        <Grid container spacing={2} pt={2}>
-          <Grid item xs={12} sm={6}>
+        <div>
+          {isLoading ? (
             <Box
-              sx={{
-                p: 2,
-                maxWidth: "100%",
-              }}
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              height={400}
             >
-              <Sheet
-                variant="outlined"
-                sx={{
-                  backgroundColor: "#1A202C",
-                  p: 2,
-                  borderRadius: "sm",
-                  maxWidth: "100%",
-                }}
-              >
-                <Typography
+              <CircularProgress />
+            </Box>
+          ) : (
+            <Grid container spacing={2} pt={2}>
+              <Grid item xs={12} sm={6}>
+                <Box
                   sx={{
-                    color: "#fff",
-                    p: 1,
-                    fontSize: "1.2rem",
-                    fontWeight: 600,
+                    p: 2,
+                    maxWidth: "100%",
                   }}
                 >
-                  Chart of denver games
-                </Typography>
-                <ContainerChartLine  data={statsChart1}/>
-              </Sheet>
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Box
-              sx={{
-                p: 2,
-                maxWidth: "100%",
-              }}
-            >
-              <Sheet
-                variant="outlined"
-                sx={{
-                  backgroundColor: "#1A202C",
-                  p: 2,
-                  borderRadius: "sm",
-                  maxWidth: "100%",
-                }}
-              >
-                <Typography
+                  <Sheet
+                    variant="outlined"
+                    sx={{
+                      backgroundColor: "#1A202C",
+                      p: 2,
+                      borderRadius: "sm",
+                      maxWidth: "100%",
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        color: "#fff",
+                        p: 1,
+                        fontSize: "1.2rem",
+                        fontWeight: 600,
+                      }}
+                    >
+                      Chart of points between Butler and jokic in nba finals
+                    </Typography>
+                    {statsChart1 ? (
+                      <ContainerChartLine data={statsChart1} />
+                    ) : (
+                      <Typography>No data available</Typography>
+                    )}
+                  </Sheet>
+                </Box>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Box
                   sx={{
-                    color: "#fff",
-                    p: 1,
-                    fontSize: "1.2rem",
-                    fontWeight: 600,
+                    p: 2,
+                    maxWidth: "100%",
                   }}
                 >
-                  Chart of denver games
-                </Typography>
-                <ContainerChartLine />
-              </Sheet>
-            </Box>
-          </Grid>
-        </Grid>
+                  <Sheet
+                    variant="outlined"
+                    sx={{
+                      backgroundColor: "#1A202C",
+                      p: 2,
+                      borderRadius: "sm",
+                      maxWidth: "100%",
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        color: "#fff",
+                        p: 1,
+                        fontSize: "1.2rem",
+                        fontWeight: 600,
+                      }}
+                    >
+                      Chart of denver games
+                    </Typography>
+                    {statsChart1 ? (
+                      <ContainerChartLine data={statsChart1} />
+                    ) : (
+                      <Typography>No data available</Typography>
+                    )}
+                  </Sheet>
+                </Box>
+              </Grid>
+            </Grid>
+          )}
+        </div>
         <Divider sx={{ backgroundColor: "#fff", mt: 2 }} />
         <Grid container spacing={1} pt={2}>
           <Grid item xs={12}>
