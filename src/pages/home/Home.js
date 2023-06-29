@@ -80,7 +80,7 @@ const Home = () => {
         setStatsChart1(dataChart1.data);
       } catch (error) {
         console.error(error);
-        setError("Ocorreu um erro ao buscar os logotipos das equipes.");
+        setError("Ocorreu um erro.");
       } finally {
         setIsLoading(false);
       }
@@ -90,7 +90,12 @@ const Home = () => {
   }, []);
 
   if (error) {
-    return <Typography>{error}</Typography>;
+    return <Container maxWidth="xl"><Typography sx={{
+      color: "#fff",
+      p: 1,
+      fontSize: "1.2rem",
+      fontWeight: 600,
+    }}>{error}</Typography></Container>;
   }
 
   return (
