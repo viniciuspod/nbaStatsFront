@@ -9,61 +9,59 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
 const Teams = () => {
-
   const { id } = useParams();
 
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [isLoading, setIsLoading] = React.useState(false);
   const [Teams, setTeams] = React.useState([]);
   const [NameTeams, setNameTeams] = React.useState([]);
   const [totalTeams, setTotalTeams] = React.useState([]);
   const [page, setPage] = React.useState(1);
   const [error, setError] = React.useState(null);
-  const [totalPages, setTotalPages] = React.useState(0);
+  const [totalPages, setTotalPages] = React.useState(1);
 
-
-    const fetchTeams = async () => {
-      try {
-        setIsLoading(true);
-        const urlTeam = `http://localhost:8080/nbaStatsApi/api/v1/teams/search?page=${page}`;
-        const response = await fetch(urlTeam, {
-          method: "GET"
-        });
-        const data = await response.json();
-        console.log(data);
-        setTeams(prevTeams => [...prevTeams, ...data.data]);
-        setTotalPages(data.meta.total_pages);
-        setTotalTeams(data.meta.total_count);
-        setPage(page + 1);
-
-      } catch (error) {
-        console.error(error);
-        setError("Ocorreu um erro ao buscar os logotipos das equipes.");
-      } finally {
-        setIsLoading(false);
-      }
-    }; 
-  React.useEffect(() => {      
-      fetchTeams();
-  }, []);
+  const isLoadingRef = React.useRef(false);
+  
+  const fetchTeams = async () => {
+    try {
+      isLoadingRef.current = true;
+      const urlTeam = `http://localhost:8080/nbaStatsApi/api/v1/teams/search?page=${page}`;
+      const response = await fetch(urlTeam, {
+        method: "GET",
+      });
+      const data = await response.json();
+      console.log(data);
+      setTeams((prevTeams) => [...prevTeams, ...data.data]);
+      setTotalPages(data.meta.total_pages);
+      setTotalTeams(data.meta.total_count);
+      setPage((prevPage) => prevPage + 1);
+    } catch (error) {
+      console.error(error);
+      setError("Ocorreu um erro ao buscar os logotipos das equipes.");
+    } finally {
+      isLoadingRef.current = false;
+    }
+  };
 
   React.useEffect(() => {
-    if (page <= totalPages) {      
+    if (page <= totalPages && !isLoadingRef.current) {
       fetchTeams();
-    }
-    if(Teams.length === totalTeams){
-      const team = Teams.map((team) => ({
+    } 
+  }, [ page, totalPages]);
+
+  React.useEffect(() => {
+    if (Teams.length === totalTeams) {
+      const team = Teams.filter((team, index) => {
+        return Teams.findIndex((t) => t.full_name === team.full_name) === index;
+      }).map((team) => ({
         label: team.full_name,
       }));
       setNameTeams(team);
-      console.log(NameTeams);
     }
-  }, [page]);
+  }, [Teams, totalTeams]);
 
   if (error) {
     return <Typography>{error}</Typography>;
   }
-
-
 
   return (
     <div style={{ backgroundColor: "#1A202C" }}>
