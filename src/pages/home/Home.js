@@ -65,7 +65,6 @@ const Home = () => {
           body: JSON.stringify(requestBodyCard),
         });
         const dataCard = await responseCard.json();
-        console.log(dataCard.data);
         setGamesCard(dataCard.data);
 
         const responseChart1 = await fetch(urlChart, {
@@ -76,7 +75,6 @@ const Home = () => {
           body: JSON.stringify(requestBodyChart),
         });
         const dataChart1 = await responseChart1.json();
-        console.log(dataChart1.data);
         setStatsChart1(dataChart1.data);
       } catch (error) {
         console.error(error);

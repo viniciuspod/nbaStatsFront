@@ -30,6 +30,7 @@ class App extends Component {
               <Route path="/averages" element={<Averages />}></Route>
               <Route path="/games" element={<Games />}></Route>
               <Route path="/stats" element={<Stats />}></Route>
+              <Route path="/stats/:id" element={<Stats />}></Route>
               <Route path="/" element={<Home />}></Route>
             </Routes>
           </main>

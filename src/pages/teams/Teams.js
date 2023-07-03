@@ -63,6 +63,10 @@ const Teams = () => {
         ? { 
           label: teamSelect.full_name,
           id: teamSelect.id, 
+          city: teamSelect.city,
+          conference: teamSelect.conference,
+          division: teamSelect.division,
+          abbreviation: teamSelect.abbreviation,
         }
         : null;
       setValueNameTeam(transformedTeam);
@@ -71,7 +75,18 @@ const Teams = () => {
   }, [Teams, totalTeams]);
 
   const handleAutocompleteChange = (event, value) => {
-    setValueNameTeam(value);
+    const teamSelect = Teams.find((team) => team.id === parseInt(value.id));
+    const transformedTeam = teamSelect
+      ? {
+          label: teamSelect.full_name,
+          id: teamSelect.id,
+          city: teamSelect.city,
+          conference: teamSelect.conference,
+          division: teamSelect.division,
+          abbreviation: teamSelect.abbreviation,
+        }
+      : null;
+    setValueNameTeam(transformedTeam);
   };
 
   if (error) {
@@ -142,9 +157,13 @@ const Teams = () => {
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item xs={12}>
+              {ValueNameTeam ?(
+                <Grid item xs={12}>
                 <ContainerTeam data={ValueNameTeam}/>
               </Grid>
+              ) : (
+                <Grid/>
+              )}
             </Grid>
           )}
         </div>

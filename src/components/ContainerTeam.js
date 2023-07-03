@@ -164,7 +164,7 @@ const ContainerTeam = (props) => {
                         fontWeight="lg"
                         sx={{ color: "#fff", textAlign: "center" }}
                       >
-                        City
+                        abbreviation
                       </Typography>
                     </Sheet>
                     <Typography
@@ -172,7 +172,7 @@ const ContainerTeam = (props) => {
                       fontWeight="lg"
                       sx={{ color: "#fff", textAlign: "center", p: 2 }}
                     >
-                      {dataTeam.label}
+                      {dataTeam.abbreviation}
                     </Typography>
                   </Sheet>
                 </Grid>
@@ -204,7 +204,7 @@ const ContainerTeam = (props) => {
                         fontWeight="lg"
                         sx={{ color: "#fff", textAlign: "center" }}
                       >
-                        Conference
+                        City
                       </Typography>
                     </Sheet>
                     <Typography
@@ -212,11 +212,52 @@ const ContainerTeam = (props) => {
                       fontWeight="lg"
                       sx={{ color: "#fff", textAlign: "center", p: 2 }}
                     >
-                      {dataTeam.label}
+                      {dataTeam.city}
                     </Typography>
                   </Sheet>
                 </Grid>
                 <Grid item xs={12} sm={3}></Grid>
+                <Grid item xs={12} sm={3}>
+                  <Sheet
+                    variant="outlined"
+                    sx={{
+                      gap: 2,
+                      p: 2,
+                      ml: 2,
+                      mr: 2,
+                      borderRadius: "sm",
+                      backgroundColor: "#1A202C",
+                    }}
+                  >
+                    <Sheet
+                      variant="outlined"
+                      sx={{
+                        gap: 2,
+                        p: 2,
+                        ml: 2,
+                        mr: 2,
+                        borderRadius: "sm",
+                        backgroundColor: "#1A202C",
+                      }}
+                    >
+                      <Typography
+                        fontSize={{ xs: "md", sm: "lg" }}
+                        fontWeight="lg"
+                        sx={{ color: "#fff", textAlign: "center" }}
+                      >
+                        Conference
+                      </Typography>
+                    </Sheet>
+
+                    <Typography
+                      fontSize={{ xs: "md", sm: "lg" }}
+                      fontWeight="lg"
+                      sx={{ color: "#fff", textAlign: "center", p: 2 }}
+                    >
+                      {dataTeam.conference}
+                    </Typography>
+                  </Sheet>
+                </Grid>
                 <Grid item xs={12} sm={3}>
                   <Sheet
                     variant="outlined"
@@ -254,7 +295,7 @@ const ContainerTeam = (props) => {
                       fontWeight="lg"
                       sx={{ color: "#fff", textAlign: "center", p: 2 }}
                     >
-                      {dataTeam.label}
+                      {dataTeam.division}
                     </Typography>
                   </Sheet>
                 </Grid>

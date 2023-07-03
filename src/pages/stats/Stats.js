@@ -1,105 +1,56 @@
 import React from "react";
+import ContainerChartLine from "../../components/ContainerChartLine";
 
-import { Box, Container, Grid, Switch, Typography } from "@mui/material";
-import Autocomplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import { Box, Container, Grid, Typography } from "@mui/material";
+import { styled } from "@mui/system";
+
+const WhiteFormControl = styled(FormControl)({
+  "& .MuiInputBase-root": {
+    border: '1px solid #ced4da',
+  },
+  "& .MuiFormLabel-root": {
+    color: "white",
+  },
+  "& .MuiSelect-icon": {
+    color: "white", 
+  },
+});
 
 const Stats = () => {
-  const allPlayers = [
-    {
-      label: "Lebron James",
-      team: "Lakers",
-    },
-    {
-      label: "Jaysom Tatum",
-      team: "Celtics",
-    },
-    {
-      label: "Jaylen Brown",
-      team: "Celtics",
-    },
-    {
-      label: "Anthony Daves",
-      team: "Lakers",
-    },
-  ];
+  const [age, setAge] = React.useState("");
+
+  const handleChange = (event) => {
+    setAge(event.target.value);
+  };
 
   return (
-    <div style={{ backgroundColor: "#1A202C" }}>
-      <Container maxWidth="xl">
-        <Grid container pt={4} sx={{ display: "flex" }}>
-          <Grid item xs={12} sm={6}>
-            <Grid container alignItems="center">
-              <Grid item xs={5}>
-                <Box p={3}>
-                  <Typography variant="h5" sx={{ color: "#fff" }}>
-                    Choose the Player :{" "}
-                  </Typography>
-                </Box>
-              </Grid>
-
-              <Grid item xs={7}>
-                <Autocomplete
-                  sx={{
-                    backgroundColor: "#fff",
-                    borderRadius: "15px",
-                    "&:hover": {
-                      boxShadow: "0px 0px 5px 2px rgba(0, 0, 0, 0.5)",
-                    },
-                  }}
-                  multiple
-                  id="tags-filled"
-                  options={allPlayers}
-                  freeSolo
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      variant="filled"
-                      label="Player"
-                      placeholder="Players"
-                    />
-                  )}
-                />
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid item xs={12}>
-            <FormGroup row>
-              <FormControlLabel
-                value="chart"
-                control={
-                  <Switch
-                    sx={{
-                      backgroundColor: "#313c52",
-                      borderRadius: "15px",
-                      "&:hover": {
-                        boxShadow: "0px 0px 5px 2px rgba(0, 0, 0, 0.5)",
-                      },
-                    }}
-                  />
-                }
-                label="Chart"
-                sx={{ color: "#fff", p: 2 }}
-              />
-              <FormControlLabel
-                value="table"
-                control={
-                  <Switch
-                    sx={{
-                      backgroundColor: "#313c52",
-                      borderRadius: "15px",
-                      "&:hover": {
-                        boxShadow: "0px 0px 5px 2px rgba(0, 0, 0, 0.5)",
-                      },
-                    }}
-                  />
-                }
-                label="Table"
-                sx={{ color: "#fff", p: 2 }}
-              />
-            </FormGroup>
+    <div>
+      <Container maxWidth="xl" pt={4}>
+        <Grid Container pt={4} sx={{ display: "flex" }}>
+          <Grid item xs={4} sx={{ width: "11rem" }}>
+            <Box sx={{ p: 4 }}>
+              <WhiteFormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">
+                  Age
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  sx={{color:"#fff"}}
+                  value={age}
+                  label="Age"
+                  onChange={handleChange}
+                >
+                  <MenuItem value={10}>Ten</MenuItem>
+                  <MenuItem value={20}>Twenty</MenuItem>
+                  <MenuItem value={30}>Thirty</MenuItem>
+                </Select>
+              </WhiteFormControl>
+            </Box>
           </Grid>
         </Grid>
       </Container>

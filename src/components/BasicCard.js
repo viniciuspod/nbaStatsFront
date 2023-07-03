@@ -52,7 +52,7 @@ export default function BasicCard(props) {
   }
 
   return (
-    <Link to={"/games"} style={{ textDecoration: "none", color: "#000000" }}>
+    <Link to={`/stats/${props.id}`} style={{ textDecoration: "none", color: "#000000" }}>
       <Card
         variant="outlined"
         sx={{
