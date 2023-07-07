@@ -1,15 +1,14 @@
 import React from "react";
 import ContainerChartLine from "../../components/ContainerChartLine";
+import ContainerAddPlayer from "../../components/ContainerAddPlayer";
 
 import Select from "@mui/joy/Select";
 import Option from "@mui/joy/Option";
 import { Sheet } from "@mui/joy";
 import { Box, Container, Grid, Typography } from "@mui/material";
-import Autocomplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { createTheme,ThemeProvider  } from "@mui/material/styles";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const theme = createTheme({
   palette: {
@@ -25,10 +24,22 @@ const theme = createTheme({
 });
 
 const Stats = () => {
+  const [counter, setCounter] = React.useState(1);
+
+  const handleAddPlayer = () => {
+    setCounter(counter + 1);
+  };
+
+  const handleDeletePlayer = (index) => {
+    setCounter((prevCounter) => prevCounter - 1);
+  };
+
   return (
     <div>
       <Container maxWidth="xl" pt={4}>
         <Grid container>
+          <Grid item xs={12} pt={4}> 
+          </Grid>
           <Grid item xs={12} pt={4}>
             <Box
               sx={{
@@ -126,7 +137,6 @@ const Stats = () => {
               </Sheet>
             </Box>
           </Grid>
-
           <Grid item xs={12} pt={4}>
             <Box
               sx={{
@@ -148,53 +158,9 @@ const Stats = () => {
                 >
                   Pick Players
                 </Typography>
-                <Grid container p={2}>
-                  <Grid item xs={8} sm={3}>
-                    <Box sx={{ p: 1 }}>
-                      <Autocomplete
-                        sx={{
-                          height: "3rem",
-                          backgroundColor: "#fff",
-                          borderRadius: "15px",
-                          "&:hover": {
-                            boxShadow: "0px 0px 5px 2px rgba(0, 0, 0, 0.5)",
-                          },
-                        }}
-                        id="tags-filled"
-                        //options={NameTeams}
-                        //value={ValueNameTeam}
-                        //onChange={handleAutocompleteChange}
-                        freeSolo
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            variant="filled"
-                            label="Player"
-                            placeholder="Player"
-                          />
-                        )}
-                      />
-                    </Box>
-                  </Grid>
-                  <Grid item xs={4} sm={2}>
-                    <Box sx={{ p: 1 }}>
-                      <Select
-                        defaultValue="season"
-                        sx={{
-                          height: "3rem",
-                          backgroundColor: "#fff",
-                          borderRadius: "15px",
-                          "&:hover": {
-                            boxShadow: "0px 0px 5px 2px rgba(0, 0, 0, 0.5)",
-                          },
-                        }}
-                      >
-                        <Option value="season">Season</Option>
-                        <Option value="custom">Custom</Option>
-                      </Select>
-                    </Box>
-                  </Grid>
-                </Grid>
+                {[...Array(counter)].map((_, index) => (
+                  <ContainerAddPlayer key={index} index={index} onDelete={handleDeletePlayer} /> 
+                ))}
                 <Box p={1} sx={{ textAlign: "left" }}>
                   <ThemeProvider theme={theme}>
                     <Button
@@ -202,6 +168,7 @@ const Stats = () => {
                       variant="outlined"
                       color="secondary"
                       startIcon={<AddCircleIcon />}
+                      onClick={handleAddPlayer}
                     >
                       Add Player
                     </Button>

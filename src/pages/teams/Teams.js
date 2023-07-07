@@ -133,13 +133,14 @@ const Teams = () => {
 
                   <Grid item xs={7}>
                     <Autocomplete
-                      sx={{
-                        backgroundColor: "#fff",
-                        borderRadius: "15px",
-                        "&:hover": {
-                          boxShadow: "0px 0px 5px 2px rgba(0, 0, 0, 0.5)",
-                        },
-                      }}
+                    sx={{
+                      height: "3rem",
+                      backgroundColor: "#fff",
+                      borderRadius: "15px",
+                      "&:hover": {
+                        boxShadow: "0px 0px 5px 2px rgba(0, 0, 0, 0.5)",
+                      },
+                    }}
                       id="tags-filled"
                       options={NameTeams}
                       value={ValueNameTeam}

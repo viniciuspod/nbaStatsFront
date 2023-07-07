@@ -7,24 +7,36 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
 const Players = () => {
-  const allPlayers = [
-    {
-      label: "Lebron James",
-      team: "Lakers",
-    },
-    {
-      label: "Jaysom Tatum",
-      team: "Celtics",
-    },
-    {
-      label: "Jaylen Brown",
-      team: "Celtics",
-    },
-    {
-      label: "Anthony Daves",
-      team: "Lakers",
-    },
-  ];
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [NamePlayers, setNamePlayers] = React.useState([]);
+
+  React.useEffect(() => {
+    const fetchPlayers = async () => {
+      try {
+        setIsLoading(true);
+        const urlTeam = `http://localhost:8080/nbaStatsApi/api/v1/players/getAllPlayers`;
+        const response = await fetch(urlTeam, {
+          method: "GET",
+        });
+        const data = await response.json();
+        console.log(data);
+        const player = data.playerNames.filter((player, index) => {
+          return data.playerNames.findIndex((t) => t.fullName === player.fullName) === index;
+        }).map((player) => ({
+          label: player.fullName,
+          id: player.id,
+          playerId: player.playerId,
+        }));
+        setNamePlayers(player);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);      
+      }
+    };
+
+      fetchPlayers();
+  }, []);
 
   return (
     <div style={{ backgroundColor: "#1A202C" }}>
@@ -40,28 +52,32 @@ const Players = () => {
                 </Box>
               </Grid>
 
-              <Grid item xs={7}>
-                <Autocomplete
-                  sx={{
-                    backgroundColor: "#fff",
-                    borderRadius: "15px",
-                    "&:hover": {
-                      boxShadow: "0px 0px 5px 2px rgba(0, 0, 0, 0.5)",
-                    },
-                  }}
-                  multiple
-                  id="tags-filled"
-                  options={allPlayers}
-                  freeSolo
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      variant="filled"
-                      label="Player"
-                      placeholder="Players"
-                    />
-                  )}
-                />
+              <Grid item xs={7} sm={6}> 
+                <Box>
+                  <Autocomplete
+                    sx={{
+                      height: "3rem",
+                      backgroundColor: "#fff",
+                      borderRadius: "15px",
+                      "&:hover": {
+                        boxShadow: "0px 0px 5px 2px rgba(0, 0, 0, 0.5)",
+                      },
+                    }}
+                    id="tags-filled"
+                    options={NamePlayers}
+                    //value={ValueNameTeam}
+                    //onChange={handleAutocompleteChange}
+                    freeSolo
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="filled"
+                        label="Player"
+                        placeholder="Player"
+                      />
+                    )}
+                  />
+                </Box>
               </Grid>
             </Grid>
           </Grid>
