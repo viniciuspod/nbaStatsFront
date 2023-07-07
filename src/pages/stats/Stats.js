@@ -5,12 +5,14 @@ import Select from "@mui/joy/Select";
 import Option from "@mui/joy/Option";
 import { Sheet } from "@mui/joy";
 import { Box, Container, Grid, Typography } from "@mui/material";
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
 
 const Stats = () => {
   return (
     <div>
       <Container maxWidth="xl" pt={4}>
-        <Grid Container >
+        <Grid container>
           <Grid item xs={12} pt={4}>
             <Box
               sx={{
@@ -32,21 +34,8 @@ const Stats = () => {
                 >
                   Define Parameters
                 </Typography>
-                <Grid
-                  Container
-                  p={2}
-                  sx={{ display: "flex", flexDirection: "row" }}
-                >
-                  <Grid
-                    item
-                    xs={2}
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "flex-end",
-                      alignItems: "flex-start",
-                    }}
-                  >
+                <Grid container p={2} spacing={2}>
+                  <Grid item xs={12} sm={2}>
                     <Box sx={{ p: 1 }}>
                       <Typography sx={{ color: "#fff", textAlign: "left" }}>
                         Data Type
@@ -57,17 +46,19 @@ const Stats = () => {
                       </Select>
                     </Box>
                   </Grid>
-                  <Box sx={{ display: "flex", marginTop: "auto" }}>
-                    <Grid
-                      item
-                      xs={2}
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "flex-end",
-                        alignItems: "flex-start",
-                      }}
-                    >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      marginTop: "auto",
+                      justifyContent: "center",
+                      width: { xs: "100%", sm: "auto" },
+                      pl: { xs: 2, sm: 0 },
+                      pt: { xs: 2, sm: 0 },
+                      pr: { xs: 0, sm: 0 },
+                      pb: { xs: 0, sm: 0 },
+                    }}
+                  >
+                    <Grid item xs={6} sm={6}>
                       <Box sx={{ p: 1 }}>
                         <Select defaultValue="2022-2023">
                           {Array.from({ length: 76 }, (_, index) => {
@@ -86,16 +77,7 @@ const Stats = () => {
                     <div style={{ display: "flex", alignItems: "center" }}>
                       <Typography sx={{ color: "#fff" }}>To</Typography>
                     </div>
-                    <Grid
-                      item
-                      xs={2}
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "flex-end",
-                        alignItems: "flex-start",
-                      }}
-                    >
+                    <Grid item xs={6} sm={6}>
                       <Box sx={{ p: 1 }}>
                         <Select defaultValue="2022-2023">
                           {Array.from({ length: 76 }, (_, index) => {
@@ -112,16 +94,7 @@ const Stats = () => {
                       </Box>
                     </Grid>
                   </Box>
-                  <Grid
-                    item
-                    xs={2}
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "flex-end",
-                      alignItems: "flex-start",
-                    }}
-                  >
+                  <Grid item xs={12} sm={2}>
                     <Box sx={{ p: 1 }}>
                       <Typography sx={{ color: "#fff", textAlign: "left" }}>
                         Game Type
@@ -137,6 +110,7 @@ const Stats = () => {
               </Sheet>
             </Box>
           </Grid>
+
           <Grid item xs={12} pt={4}>
             <Box
               sx={{
@@ -158,104 +132,49 @@ const Stats = () => {
                 >
                   Pick Players
                 </Typography>
-                <Grid
-                  Container
-                  p={2}
-                  sx={{ display: "flex", flexDirection: "row" }}
-                >
-                  <Grid
-                    item
-                    xs={2}
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "flex-end",
-                      alignItems: "flex-start",
-                    }}
-                  >
+                <Grid container p={2}>
+                  <Grid item xs={8} sm={3}>
                     <Box sx={{ p: 1 }}>
-                      <Typography sx={{ color: "#fff", textAlign: "left" }}>
-                        Data Type
-                      </Typography>
-                      <Select defaultValue="season">
-                        <Option value="season">Season</Option>
-                        <Option value="custom">Custom</Option>
-                      </Select>
+                      <Autocomplete
+                        sx={{
+                          height: "3rem",
+                          backgroundColor: "#fff",
+                          borderRadius: "15px",
+                          "&:hover": {
+                            boxShadow: "0px 0px 5px 2px rgba(0, 0, 0, 0.5)",
+                          },
+                        }}
+                        id="tags-filled"
+                        //options={NameTeams}
+                        //value={ValueNameTeam}
+                        //onChange={handleAutocompleteChange}
+                        freeSolo
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            variant="filled"
+                            label="Player"
+                            placeholder="Player"
+                          />
+                        )}
+                      />
                     </Box>
                   </Grid>
-                  <Box sx={{ display: "flex", marginTop: "auto" }}>
-                    <Grid
-                      item
-                      xs={2}
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "flex-end",
-                        alignItems: "flex-start",
-                      }}
-                    >
-                      <Box sx={{ p: 1 }}>
-                        <Select defaultValue="2022-2023">
-                          {Array.from({ length: 76 }, (_, index) => {
-                            const startYear = 2022 - index;
-                            const endYear = startYear + 1;
-                            const optionValue = `${startYear}-${endYear}`;
-                            return (
-                              <Option key={optionValue} value={optionValue}>
-                                {optionValue}
-                              </Option>
-                            );
-                          })}
-                        </Select>
-                      </Box>
-                    </Grid>
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <Typography sx={{ color: "#fff" }}>To</Typography>
-                    </div>
-                    <Grid
-                      item
-                      xs={2}
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "flex-end",
-                        alignItems: "flex-start",
-                      }}
-                    >
-                      <Box sx={{ p: 1 }}>
-                        <Select defaultValue="2022-2023">
-                          {Array.from({ length: 76 }, (_, index) => {
-                            const startYear = 2022 - index;
-                            const endYear = startYear + 1;
-                            const optionValue = `${startYear}-${endYear}`;
-                            return (
-                              <Option key={optionValue} value={optionValue}>
-                                {optionValue}
-                              </Option>
-                            );
-                          })}
-                        </Select>
-                      </Box>
-                    </Grid>
-                  </Box>
-                  <Grid
-                    item
-                    xs={2}
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "flex-end",
-                      alignItems: "flex-start",
-                    }}
-                  >
+                  <Grid item xs={4} sm={2}>
                     <Box sx={{ p: 1 }}>
-                      <Typography sx={{ color: "#fff", textAlign: "left" }}>
-                        Game Type
-                      </Typography>
-                      <Select defaultValue="all">
-                        <Option value="all">All</Option>
-                        <Option value="regular">Regular Season</Option>
-                        <Option value="playoffs">Playoffs</Option>
+                      <Select
+                        defaultValue="season"
+                        sx={{
+                          height: "3rem",
+                          backgroundColor: "#fff",
+                          borderRadius: "15px",
+                          "&:hover": {
+                            boxShadow: "0px 0px 5px 2px rgba(0, 0, 0, 0.5)",
+                          },
+                        }}
+                      >
+                        <Option value="season">Season</Option>
+                        <Option value="custom">Custom</Option>
                       </Select>
                     </Box>
                   </Grid>
