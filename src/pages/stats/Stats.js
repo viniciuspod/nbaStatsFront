@@ -7,6 +7,22 @@ import { Sheet } from "@mui/joy";
 import { Box, Container, Grid, Typography } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { createTheme,ThemeProvider  } from "@mui/material/styles";
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#0971f1",
+      darker: "#053e85",
+    },
+    secondary: {
+      main: "#68D391",
+      contrastText: "#fff",
+    },
+  },
+});
 
 const Stats = () => {
   return (
@@ -179,6 +195,18 @@ const Stats = () => {
                     </Box>
                   </Grid>
                 </Grid>
+                <Box p={1} sx={{ textAlign: "left" }}>
+                  <ThemeProvider theme={theme}>
+                    <Button
+                      disabled={false}
+                      variant="outlined"
+                      color="secondary"
+                      startIcon={<AddCircleIcon />}
+                    >
+                      Add Player
+                    </Button>
+                  </ThemeProvider>
+                </Box>
               </Sheet>
             </Box>
           </Grid>
