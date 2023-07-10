@@ -25,6 +25,32 @@ const theme = createTheme({
 
 const Stats = () => {
   const [counter, setCounter] = React.useState(1);
+  const [YearStart, setYearStart] = React.useState("2022-2023");
+  const [YearFinal, setYearFinal] = React.useState("2022-2023");
+  const [errorData, setErrorData] = React.useState(false);
+
+  React.useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        //const urlTeam = `http://localhost:8080/nbaStatsApi/api/v1/teams/search?page=`;
+        //const response = await fetch(urlTeam, {
+        //  method: "GET",
+        //});
+        //const data = await response.json();
+        //console.log(data);
+        if (YearFinal < YearStart) {
+          console.log("erro");
+          setErrorData(true);
+        }
+        console.log(YearStart);
+        console.log(YearFinal);
+      } catch (error) {
+        console.error(error);
+      } finally {
+      }
+    };
+    fetchStats();
+  }, [YearStart, YearFinal]);
 
   const handleAddPlayer = () => {
     setCounter(counter + 1);
@@ -34,12 +60,19 @@ const Stats = () => {
     setCounter((prevCounter) => prevCounter - 1);
   };
 
+  const handleInitialSelectChange = (value) => {
+    setYearStart(value.target.outerText);
+  };
+
+  const handleFinalSelectChange = (value) => {
+    setYearFinal(value.target.outerText);
+  };
+
   return (
     <div>
       <Container maxWidth="xl" pt={4}>
         <Grid container>
-          <Grid item xs={12} pt={4}> 
-          </Grid>
+          <Grid item xs={12} pt={4}></Grid>
           <Grid item xs={12} pt={4}>
             <Box
               sx={{
@@ -87,7 +120,10 @@ const Stats = () => {
                   >
                     <Grid item xs={6} sm={6}>
                       <Box sx={{ p: 1 }}>
-                        <Select defaultValue="2022-2023">
+                        <Select
+                          defaultValue="2022-2023"
+                          onChange={(value) => handleInitialSelectChange(value)}
+                        >
                           {Array.from({ length: 76 }, (_, index) => {
                             const startYear = 2022 - index;
                             const endYear = startYear + 1;
@@ -106,7 +142,11 @@ const Stats = () => {
                     </div>
                     <Grid item xs={6} sm={6}>
                       <Box sx={{ p: 1 }}>
-                        <Select defaultValue="2022-2023">
+                        <Select
+                          defaultValue="2022-2023"
+                          onChange={(value) => handleFinalSelectChange(value)}
+                          style={errorData ? { border: "1px solid red", backgroundColor: "#ffcdd2" } : {}}
+                        >
                           {Array.from({ length: 76 }, (_, index) => {
                             const startYear = 2022 - index;
                             const endYear = startYear + 1;
@@ -159,7 +199,11 @@ const Stats = () => {
                   Pick Players
                 </Typography>
                 {[...Array(counter)].map((_, index) => (
-                  <ContainerAddPlayer key={index} index={index} onDelete={handleDeletePlayer} /> 
+                  <ContainerAddPlayer
+                    key={index}
+                    index={index}
+                    onDelete={handleDeletePlayer}
+                  />
                 ))}
                 <Box p={1} sx={{ textAlign: "left" }}>
                   <ThemeProvider theme={theme}>
