@@ -8,7 +8,7 @@ import Option from "@mui/joy/Option";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-const ContainerAddPlayer = ({ index, onDelete }) => {
+const ContainerAddPlayer = ({ index, onDelete, onValueChange,onValueValPlayerChange }) => {
 
   const [isLoading, setIsLoading] = React.useState(false);
   const [NamePlayers, setNamePlayers] = React.useState([]);
@@ -45,6 +45,14 @@ const ContainerAddPlayer = ({ index, onDelete }) => {
         onDelete(index);
       };
 
+    const handleAutocompleteChange = (event, value) => {
+      onValueChange(value);
+    };
+
+    const handleSelectPickChange = (event, newValue) => {
+      onValueValPlayerChange(newValue);
+    };
+
   return (
     <Grid container p={2}>
       <Grid item xs={7} sm={3}>
@@ -60,8 +68,7 @@ const ContainerAddPlayer = ({ index, onDelete }) => {
             }}
             id="tags-filled"
             options={NamePlayers}
-            //value={ValueNameTeam}
-            //onChange={handleAutocompleteChange}
+            onChange={handleAutocompleteChange}
             freeSolo
             renderInput={(params) => (
               <TextField
@@ -78,6 +85,7 @@ const ContainerAddPlayer = ({ index, onDelete }) => {
         <Box sx={{ p: 1 , display:"flex"}}>
           <Select
             defaultValue="pts"
+            onChange={handleSelectPickChange}
             sx={{
               height: "3rem",
               backgroundColor: "#fff",

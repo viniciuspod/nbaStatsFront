@@ -9,6 +9,8 @@ import { Box, Container, Grid, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Popper from "@mui/material/Popper";
+import Fade from "@mui/material/Fade";
 
 const theme = createTheme({
   palette: {
@@ -27,26 +29,31 @@ const Stats = () => {
   const [counter, setCounter] = React.useState(1);
   const [YearStart, setYearStart] = React.useState("2022-2023");
   const [YearFinal, setYearFinal] = React.useState("2022-2023");
+  const [DataType, setDataType] = React.useState("season");
+  const [GameType, setGameType] = React.useState("all");
   const [errorData, setErrorData] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [valueNamePlayer, setValueNamePlayer] = React.useState([]);
+  const [valuePlayerVal, setValuePlayerVal] = React.useState("pts");
 
   React.useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        //const urlTeam = `http://localhost:8080/nbaStatsApi/api/v1/teams/search?page=`;
-        //const response = await fetch(urlTeam, {
-        //  method: "GET",
-        //});
-        //const data = await response.json();
-        //console.log(data);
-        if (YearFinal < YearStart) {
-          console.log("erro");
-          setErrorData(true);
-        }
-        console.log(YearStart);
-        console.log(YearFinal);
-      } catch (error) {
-        console.error(error);
-      } finally {
+    console.log(YearFinal);
+    console.log(YearStart);
+    console.log(DataType);
+    console.log(GameType);
+    console.log(valueNamePlayer);
+    console.log(valuePlayerVal);
+  },[YearFinal,YearStart,DataType,GameType,valueNamePlayer,valuePlayerVal]);
+
+  React.useEffect(() => {
+    const fetchStats = () => {
+      if (YearFinal < YearStart) {
+        setErrorData(true);
+        setOpen((previousOpen) => !previousOpen);
+      } else {
+        setErrorData(false);
+        setOpen(false);
       }
     };
     fetchStats();
@@ -60,13 +67,36 @@ const Stats = () => {
     setCounter((prevCounter) => prevCounter - 1);
   };
 
-  const handleInitialSelectChange = (value) => {
-    setYearStart(value.target.outerText);
+  const handleInitialSelectChange = (event,newValue) => {
+    setYearStart(newValue);
   };
 
-  const handleFinalSelectChange = (value) => {
-    setYearFinal(value.target.outerText);
+  const handleFinalSelectChange = (event,newValue) => {
+    setYearFinal(newValue);
   };
+
+  const handleClickFinalSelect = (value) => {
+    setAnchorEl(value.currentTarget);
+  };
+
+  const handleSelectDataTypeChange = (event,newValue) => {
+    setDataType(newValue);
+  };
+
+  const handleSelectGameTypeChange = (event,newValue) => {
+    setGameType(newValue);
+  };
+
+  const handleValueChange = (newValue) => {
+    setValueNamePlayer(newValue);
+  };
+
+  const handleValueValPlayerChange = (newValue) => {
+    setValuePlayerVal(newValue);
+  }
+
+  const canBeOpen = open && Boolean(anchorEl);
+  const id = canBeOpen ? "transition-popper" : undefined;
 
   return (
     <div>
@@ -100,7 +130,7 @@ const Stats = () => {
                       <Typography sx={{ color: "#fff", textAlign: "left" }}>
                         Data Type
                       </Typography>
-                      <Select defaultValue="season">
+                      <Select defaultValue="season" onChange={handleSelectDataTypeChange}>
                         <Option value="season">Season</Option>
                         <Option value="custom">Custom</Option>
                       </Select>
@@ -122,7 +152,7 @@ const Stats = () => {
                       <Box sx={{ p: 1 }}>
                         <Select
                           defaultValue="2022-2023"
-                          onChange={(value) => handleInitialSelectChange(value)}
+                          onChange={handleInitialSelectChange}
                         >
                           {Array.from({ length: 76 }, (_, index) => {
                             const startYear = 2022 - index;
@@ -144,8 +174,16 @@ const Stats = () => {
                       <Box sx={{ p: 1 }}>
                         <Select
                           defaultValue="2022-2023"
-                          onChange={(value) => handleFinalSelectChange(value)}
-                          style={errorData ? { border: "1px solid red", backgroundColor: "#ffcdd2" } : {}}
+                          onChange={handleFinalSelectChange}
+                          onClick={handleClickFinalSelect}
+                          style={
+                            errorData
+                              ? {
+                                  border: "1px solid red",
+                                  backgroundColor: "#ffcdd2",
+                                }
+                              : {}
+                          }
                         >
                           {Array.from({ length: 76 }, (_, index) => {
                             const startYear = 2022 - index;
@@ -158,6 +196,26 @@ const Stats = () => {
                             );
                           })}
                         </Select>
+                        <Popper
+                          id={id}
+                          open={open}
+                          anchorEl={anchorEl}
+                          transition
+                        >
+                          {({ TransitionProps }) => (
+                            <Fade {...TransitionProps} timeout={350}>
+                              <Box
+                                sx={{
+                                  border: 1,
+                                  p: 1,
+                                  bgcolor: "background.paper",
+                                }}
+                              >
+                                Select a date after the start date.
+                              </Box>
+                            </Fade>
+                          )}
+                        </Popper>
                       </Box>
                     </Grid>
                   </Box>
@@ -166,7 +224,7 @@ const Stats = () => {
                       <Typography sx={{ color: "#fff", textAlign: "left" }}>
                         Game Type
                       </Typography>
-                      <Select defaultValue="all">
+                      <Select defaultValue="all" onChange={handleSelectGameTypeChange}>
                         <Option value="all">All</Option>
                         <Option value="regular">Regular Season</Option>
                         <Option value="playoffs">Playoffs</Option>
@@ -203,6 +261,8 @@ const Stats = () => {
                     key={index}
                     index={index}
                     onDelete={handleDeletePlayer}
+                    onValueChange={handleValueChange}
+                    onValueValPlayerChange={handleValueValPlayerChange}
                   />
                 ))}
                 <Box p={1} sx={{ textAlign: "left" }}>
