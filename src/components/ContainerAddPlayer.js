@@ -84,8 +84,8 @@ const ContainerAddPlayer = ({ index, onDelete, onValueChange,onValueValPlayerCha
       <Grid item xs={5} sm={2}>
         <Box sx={{ p: 1 , display:"flex"}}>
           <Select
-            defaultValue="pts"
             onChange={handleSelectPickChange}
+            placeholder="Stats"
             sx={{
               height: "3rem",
               backgroundColor: "#fff",
