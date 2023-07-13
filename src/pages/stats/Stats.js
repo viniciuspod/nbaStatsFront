@@ -130,14 +130,13 @@ const Stats = () => {
   };
 
   const handleValueChange = (newValue,index) => {
-    const updatedValue = [...valueNamePlayer]; 
- 
+    const updatedValue = [...valueNamePlayer];    
     if (index >= 0 && index < updatedValue.length) {
       updatedValue[index] = newValue; 
     } else {
       updatedValue.push(newValue); 
     }
-  
+    console.log(updatedValue);
     setValueNamePlayer(updatedValue); 
   };
 
@@ -314,15 +313,22 @@ const Stats = () => {
                 >
                   Pick Players
                 </Typography>
-                {[...Array(counter)].map((_, index) => (
+                {[...Array(counter)].map((_, index) => {
+                  const currentIndex = index; // Captura o valor atual do index em uma variável local
+                 return(                 
                   <ContainerAddPlayer
                     key={index}
-                    index={index}
-                    onDelete={handleDeletePlayer}
-                    onValueChange={value => handleValueChange(value,index)}
-                    onValueValPlayerChange={value => handleValueValPlayerChange(value,index)}
+                    index={currentIndex}  
+                    players={valueNamePlayer}
+                    onDelete={value => {
+                      handleDeletePlayer(value);
+                    }}
+                    onValueChange={value => {
+                      handleValueChange(value,currentIndex);
+                    }} 
+                    onValueValPlayerChange={value => handleValueValPlayerChange(value,currentIndex)}
                   />
-                ))}
+                )})}
                 <Box p={1} sx={{ textAlign: "left" }}>
                   <ThemeProvider theme={theme}>
                     <Button

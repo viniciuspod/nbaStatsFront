@@ -8,10 +8,12 @@ import Option from "@mui/joy/Option";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-const ContainerAddPlayer = ({ index, onDelete, onValueChange,onValueValPlayerChange }) => {
+const ContainerAddPlayer = ({ players, index, onDelete, onValueChange,onValueValPlayerChange }) => {
 
   const [isLoading, setIsLoading] = React.useState(false);
   const [NamePlayers, setNamePlayers] = React.useState([]);
+
+  const selectedPlayer = players[index] || null;
 
   React.useEffect(() => {
     const fetchPlayers = async () => {
@@ -43,16 +45,17 @@ const ContainerAddPlayer = ({ index, onDelete, onValueChange,onValueValPlayerCha
 
     const handleDelete = () => {
         onDelete(index);
-      };
+    };
 
     const handleAutocompleteChange = (event, value) => {
+      console.log(value);
       onValueChange(value);
     };
 
     const handleSelectPickChange = (event, newValue) => {
       onValueValPlayerChange(newValue);
     };
-
+    
   return (
     <Grid container p={2}>
       <Grid item xs={7} sm={3}>
@@ -68,7 +71,8 @@ const ContainerAddPlayer = ({ index, onDelete, onValueChange,onValueValPlayerCha
             }}
             id="tags-filled"
             options={NamePlayers}
-            onChange={handleAutocompleteChange}
+            value={selectedPlayer}
+            onChange={handleAutocompleteChange}            
             freeSolo
             renderInput={(params) => (
               <TextField
