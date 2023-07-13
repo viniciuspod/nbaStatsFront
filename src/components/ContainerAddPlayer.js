@@ -8,12 +8,13 @@ import Option from "@mui/joy/Option";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-const ContainerAddPlayer = ({ players, index, onDelete, onValueChange,onValueValPlayerChange }) => {
+const ContainerAddPlayer = ({ players, vals, index, onDelete, onValueChange,onValueValPlayerChange }) => {
 
   const [isLoading, setIsLoading] = React.useState(false);
   const [NamePlayers, setNamePlayers] = React.useState([]);
 
   const selectedPlayer = players[index] || null;
+  const selectedVal = vals[index] || null;
 
   React.useEffect(() => {
     const fetchPlayers = async () => {
@@ -90,6 +91,7 @@ const ContainerAddPlayer = ({ players, index, onDelete, onValueChange,onValueVal
           <Select
             onChange={handleSelectPickChange}
             placeholder="Stats"
+            value={selectedVal}
             sx={{
               height: "3rem",
               backgroundColor: "#fff",

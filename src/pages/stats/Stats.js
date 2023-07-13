@@ -36,47 +36,80 @@ const Stats = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [valueNamePlayer, setValueNamePlayer] = React.useState([]);
   const [valuePlayerVal, setValuePlayerVal] = React.useState([]);
+  const [page, setPage] = React.useState(1);
+  const [totalPages, setTotalPages] = React.useState(1);
 
+  const isLoadingRef = React.useRef(false);
 
-    React.useEffect(() => {
-      const yearStart = YearStart.split("-")[0];
-      const startDate = `01-10-${yearStart}` ;
-      const yearFinal = YearFinal.split("-")[0];
-      const FinalDate = `01-07-${yearFinal}` ;      
-      const IdPlayers = valueNamePlayer.map(player => player.id);
-      let postSeason = null;
-      if (GameType === "playoffs") {
-        postSeason = true;
-      } else if (GameType === "regular") {
-        postSeason = false;
-      }     
-      const requestBodyChart = {
-        startDate: startDate,
-        endDate: FinalDate,  
-        postSeason: postSeason,  
-        playersIds: IdPlayers,
-      };
-      console.log(valueNamePlayer);
-      const fetchTeams = async () => {
+  React.useEffect(() => {
+    const fetchTeams = async () => {
       try {
-        const urlTeam = "http://localhost:8080/nbaStatsApi/api/v1/stats/search";
-        const response = await fetch(urlTeam, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestBodyChart),
-        });
-        //const data = await response.json();
-        //console.log(data);
+        const isValuesValid = valueNamePlayer.every(
+          (_, index) => valueNamePlayer[index] && valuePlayerVal[index]
+        );
+
+        if (isValuesValid) {
+          isLoadingRef.current = true;
+          const yearStart = YearStart.split("-")[0];
+          const startDate = `01-10-${yearStart}`;
+          const yearFinal = YearFinal.split("-")[1];
+          const FinalDate = `01-07-${yearFinal}`;
+          const IdPlayers = valueNamePlayer.map((player) => player.playerId);
+          const perPage = 100;
+          let postSeason = null;
+
+          if (GameType === "playoffs") {
+            postSeason = true;
+          } else if (GameType === "regular") {
+            postSeason = false;
+          }
+
+          const requestBodyChart = {
+            startDate: startDate,
+            endDate: FinalDate,
+            postSeason: postSeason,
+            playersIds: IdPlayers,
+            perPage: perPage,
+            page: page,
+          };
+
+          console.log(valuePlayerVal);
+
+          const urlTeam =
+            "http://localhost:8080/nbaStatsApi/api/v1/stats/search";
+          const response = await fetch(urlTeam, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestBodyChart),
+          });
+
+          const data = await response.json();
+          setPage((prevPage) => prevPage + 1);
+          setTotalPages(data.meta.total_pages);
+          console.log(data);
+        }
       } catch (error) {
         console.error(error);
-      } finally {      
+      }finally {
+        isLoadingRef.current = false;        
       }
-    }; 
+    };
 
-    fetchTeams();
-  },[YearFinal,YearStart,DataType,GameType,valueNamePlayer,valuePlayerVal]);
+    if (page <= totalPages && !isLoadingRef.current ) {
+      fetchTeams();
+    }
+  }, [
+    YearFinal,
+    YearStart,
+    DataType,
+    GameType,
+    valueNamePlayer,
+    valuePlayerVal,
+    page,
+    totalPages
+  ]);
 
   React.useEffect(() => {
     const fetchStats = () => {
@@ -97,23 +130,23 @@ const Stats = () => {
 
   const handleDeletePlayer = (index) => {
     setCounter((prevCounter) => prevCounter - 1);
-    const deleteValueName = [...valueNamePlayer]; 
-    const deleteValueVal = [...valuePlayerVal]; 
+    const deleteValueName = [...valueNamePlayer];
+    const deleteValueVal = [...valuePlayerVal];
     if (index >= 0 && index < deleteValueName.length) {
-      deleteValueName.splice(index, 1); 
+      deleteValueName.splice(index, 1);
     }
     if (index >= 0 && index < deleteValueVal.length) {
-      deleteValueVal.splice(index, 1); 
+      deleteValueVal.splice(index, 1);
     }
     setValueNamePlayer(deleteValueName);
     setValuePlayerVal(deleteValueVal);
   };
 
-  const handleInitialSelectChange = (event,newValue) => {
+  const handleInitialSelectChange = (event, newValue) => {
     setYearStart(newValue);
   };
 
-  const handleFinalSelectChange = (event,newValue) => {
+  const handleFinalSelectChange = (event, newValue) => {
     setYearFinal(newValue);
   };
 
@@ -121,36 +154,36 @@ const Stats = () => {
     setAnchorEl(value.currentTarget);
   };
 
-  const handleSelectDataTypeChange = (event,newValue) => {
+  const handleSelectDataTypeChange = (event, newValue) => {
     setDataType(newValue);
   };
 
-  const handleSelectGameTypeChange = (event,newValue) => {
+  const handleSelectGameTypeChange = (event, newValue) => {
     setGameType(newValue);
   };
 
-  const handleValueChange = (newValue,index) => {
-    const updatedValue = [...valueNamePlayer];    
+  const handleValueChange = (newValue, index) => {
+    const updatedValue = [...valueNamePlayer];
     if (index >= 0 && index < updatedValue.length) {
-      updatedValue[index] = newValue; 
+      updatedValue[index] = newValue;
     } else {
-      updatedValue.push(newValue); 
+      updatedValue.push(newValue);
     }
     console.log(updatedValue);
-    setValueNamePlayer(updatedValue); 
+    setValueNamePlayer(updatedValue);
   };
 
-  const handleValueValPlayerChange = (newValue,index) => {
-    const updatedValue = [...valuePlayerVal]; 
- 
+  const handleValueValPlayerChange = (newValue, index) => {
+    const updatedValue = [...valuePlayerVal];
+
     if (index >= 0 && index < updatedValue.length) {
-      updatedValue[index] = newValue; 
+      updatedValue[index] = newValue;
     } else {
-      updatedValue.push(newValue); 
+      updatedValue.push(newValue);
     }
-    
+
     setValuePlayerVal(updatedValue);
-  }
+  };
 
   const canBeOpen = open && Boolean(anchorEl);
   const id = canBeOpen ? "transition-popper" : undefined;
@@ -187,7 +220,10 @@ const Stats = () => {
                       <Typography sx={{ color: "#fff", textAlign: "left" }}>
                         Data Type
                       </Typography>
-                      <Select defaultValue="season" onChange={handleSelectDataTypeChange}>
+                      <Select
+                        defaultValue="season"
+                        onChange={handleSelectDataTypeChange}
+                      >
                         <Option value="season">Season</Option>
                         <Option value="custom">Custom</Option>
                       </Select>
@@ -281,7 +317,10 @@ const Stats = () => {
                       <Typography sx={{ color: "#fff", textAlign: "left" }}>
                         Game Type
                       </Typography>
-                      <Select defaultValue="all" onChange={handleSelectGameTypeChange}>
+                      <Select
+                        defaultValue="all"
+                        onChange={handleSelectGameTypeChange}
+                      >
                         <Option value="all">All</Option>
                         <Option value="regular">Regular Season</Option>
                         <Option value="playoffs">Playoffs</Option>
@@ -315,20 +354,24 @@ const Stats = () => {
                 </Typography>
                 {[...Array(counter)].map((_, index) => {
                   const currentIndex = index; // Captura o valor atual do index em uma variável local
-                 return(                 
-                  <ContainerAddPlayer
-                    key={index}
-                    index={currentIndex}  
-                    players={valueNamePlayer}
-                    onDelete={value => {
-                      handleDeletePlayer(value);
-                    }}
-                    onValueChange={value => {
-                      handleValueChange(value,currentIndex);
-                    }} 
-                    onValueValPlayerChange={value => handleValueValPlayerChange(value,currentIndex)}
-                  />
-                )})}
+                  return (
+                    <ContainerAddPlayer
+                      key={index}
+                      index={currentIndex}
+                      players={valueNamePlayer}
+                      vals={valuePlayerVal}
+                      onDelete={(value) => {
+                        handleDeletePlayer(value);
+                      }}
+                      onValueChange={(value) => {
+                        handleValueChange(value, currentIndex);
+                      }}
+                      onValueValPlayerChange={(value) =>
+                        handleValueValPlayerChange(value, currentIndex)
+                      }
+                    />
+                  );
+                })}
                 <Box p={1} sx={{ textAlign: "left" }}>
                   <ThemeProvider theme={theme}>
                     <Button
