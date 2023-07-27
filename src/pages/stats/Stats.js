@@ -37,7 +37,7 @@ const Stats = () => {
   const [valueNamePlayer, setValueNamePlayer] = React.useState([]);
   const [valuePlayerVal, setValuePlayerVal] = React.useState([]);
   const [page, setPage] = React.useState(null);
-  const [dataChart , setDataChart] = React.useState([]);
+  const [dataChart, setDataChart] = React.useState([]);
 
   const isLoadingRef = React.useRef(false);
   const fimExec = React.useRef(true);
@@ -57,9 +57,9 @@ const Stats = () => {
         if (isValuesValid) {
           isLoadingRef.current = true;
           const yearStart = YearStart.split("-")[0];
-          const startDate = `01-10-${yearStart}`;
+          const startDate = `${yearStart}-10-01`;
           const yearFinal = YearFinal.split("-")[1];
-          const FinalDate = `01-07-${yearFinal}`;
+          const FinalDate = `${yearFinal}-07-01`;
           const IdPlayers = valueNamePlayer.map((player) => player.playerId);
           const perPage = 100;
           let postSeason = null;
@@ -94,9 +94,9 @@ const Stats = () => {
           const data = await response.json();
           setPage(data.meta.next_page);
           if (data.meta.next_page == null) {
-            fimExec.current = false; 
+            fimExec.current = false;
           }
-          setDataChart((prevData) => [...prevData , ...data.data])
+          setDataChart((prevData) => [...prevData, ...data.data]);
           console.log(data);
         }
       } catch (error) {
@@ -116,7 +116,7 @@ const Stats = () => {
     GameType,
     valueNamePlayer,
     valuePlayerVal,
-    page
+    page,
   ]);
 
   React.useEffect(() => {
@@ -149,14 +149,19 @@ const Stats = () => {
     setValueNamePlayer(deleteValueName);
     setValuePlayerVal(deleteValueVal);
     fimExec.current = true;
+    setDataChart([]);
   };
 
   const handleInitialSelectChange = (event, newValue) => {
     setYearStart(newValue);
+    fimExec.current = true;
+    setDataChart([]);
   };
 
   const handleFinalSelectChange = (event, newValue) => {
     setYearFinal(newValue);
+    fimExec.current = true;
+    setDataChart([]);
   };
 
   const handleClickFinalSelect = (value) => {
@@ -169,6 +174,8 @@ const Stats = () => {
 
   const handleSelectGameTypeChange = (event, newValue) => {
     setGameType(newValue);
+    fimExec.current = true;
+    setDataChart([]);
   };
 
   const handleValueChange = (newValue, index) => {
@@ -181,6 +188,7 @@ const Stats = () => {
     console.log(updatedValue);
     setValueNamePlayer(updatedValue);
     fimExec.current = true;
+    setDataChart([]);
   };
 
   const handleValueValPlayerChange = (newValue, index) => {
@@ -202,7 +210,11 @@ const Stats = () => {
     <div>
       <Container maxWidth="xl" pt={4}>
         <Grid container>
-          <Grid item xs={12} pt={4}></Grid>
+          <Grid item xs={12} pt={4}>
+            <Sheet sx={{ height: "30rem", borderRadius: "sm" }}>
+              <ContainerChartLine data={dataChart} />
+            </Sheet>
+          </Grid>
           <Grid item xs={12} pt={4}>
             <Box
               sx={{

@@ -88,12 +88,20 @@ const Home = () => {
   }, []);
 
   if (error) {
-    return <Container maxWidth="xl"><Typography sx={{
-      color: "#fff",
-      p: 1,
-      fontSize: "1.2rem",
-      fontWeight: 600,
-    }}>{error}</Typography></Container>;
+    return (
+      <Container maxWidth="xl">
+        <Typography
+          sx={{
+            color: "#fff",
+            p: 1,
+            fontSize: "1.2rem",
+            fontWeight: 600,
+          }}
+        >
+          {error}
+        </Typography>
+      </Container>
+    );
   }
 
   return (
@@ -148,7 +156,6 @@ const Home = () => {
                 <Box
                   sx={{
                     p: 2,
-                    maxWidth: "100%",
                   }}
                 >
                   <Sheet
@@ -157,7 +164,6 @@ const Home = () => {
                       backgroundColor: "#1A202C",
                       p: 2,
                       borderRadius: "sm",
-                      maxWidth: "100%",
                     }}
                   >
                     <Typography
@@ -171,7 +177,9 @@ const Home = () => {
                       Chart of points between Butler and jokic in nba finals
                     </Typography>
                     {statsChart1 ? (
-                      <ContainerChartLine data={statsChart1} />
+                      <Box sx={{ height: "25rem" }}>
+                        <ContainerChartLine data={statsChart1} />
+                      </Box>
                     ) : (
                       <Typography>No data available</Typography>
                     )}
@@ -205,7 +213,9 @@ const Home = () => {
                       Chart of denver games
                     </Typography>
                     {statsChart1 ? (
-                      <ContainerChartLine data={statsChart1} />
+                      <Box sx={{ height: "25rem" }}>
+                        <ContainerChartLine data={statsChart1} />
+                      </Box>
                     ) : (
                       <Typography>No data available</Typography>
                     )}
