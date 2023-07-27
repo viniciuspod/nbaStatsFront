@@ -37,6 +37,7 @@ const Stats = () => {
   const [valueNamePlayer, setValueNamePlayer] = React.useState([]);
   const [valuePlayerVal, setValuePlayerVal] = React.useState([]);
   const [page, setPage] = React.useState(null);
+  const [dataChart , setDataChart] = React.useState([]);
 
   const isLoadingRef = React.useRef(false);
   const fimExec = React.useRef(true);
@@ -93,8 +94,9 @@ const Stats = () => {
           const data = await response.json();
           setPage(data.meta.next_page);
           if (data.meta.next_page == null) {
-            fimExec.current = false;
+            fimExec.current = false; 
           }
+          setDataChart((prevData) => [...prevData , ...data.data])
           console.log(data);
         }
       } catch (error) {
@@ -146,6 +148,7 @@ const Stats = () => {
     }
     setValueNamePlayer(deleteValueName);
     setValuePlayerVal(deleteValueVal);
+    fimExec.current = true;
   };
 
   const handleInitialSelectChange = (event, newValue) => {
