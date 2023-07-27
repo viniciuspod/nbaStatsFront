@@ -36,17 +36,22 @@ const Stats = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [valueNamePlayer, setValueNamePlayer] = React.useState([]);
   const [valuePlayerVal, setValuePlayerVal] = React.useState([]);
-  const [page, setPage] = React.useState(1);
-  const [totalPages, setTotalPages] = React.useState(1);
+  const [page, setPage] = React.useState(null);
 
   const isLoadingRef = React.useRef(false);
+  const fimExec = React.useRef(true);
 
   React.useEffect(() => {
     const fetchTeams = async () => {
       try {
-        const isValuesValid = valueNamePlayer.every(
-          (_, index) => valueNamePlayer[index] && valuePlayerVal[index]
-        );
+        const isValuesValid =
+          valueNamePlayer.length > 0 &&
+          valuePlayerVal.length > 0 &&
+          valueNamePlayer.every(
+            (_, index) => valueNamePlayer[index] && valuePlayerVal[index]
+          );
+
+        console.log(isValuesValid);
 
         if (isValuesValid) {
           isLoadingRef.current = true;
@@ -73,7 +78,7 @@ const Stats = () => {
             page: page,
           };
 
-          console.log(valuePlayerVal);
+          console.log(requestBodyChart);
 
           const urlTeam =
             "http://localhost:8080/nbaStatsApi/api/v1/stats/search";
@@ -86,18 +91,20 @@ const Stats = () => {
           });
 
           const data = await response.json();
-          setPage((prevPage) => prevPage + 1);
-          setTotalPages(data.meta.total_pages);
+          setPage(data.meta.next_page);
+          if (data.meta.next_page == null) {
+            fimExec.current = false;
+          }
           console.log(data);
         }
       } catch (error) {
         console.error(error);
-      }finally {
-        isLoadingRef.current = false;        
+      } finally {
+        isLoadingRef.current = false;
       }
     };
-
-    if (page <= totalPages && !isLoadingRef.current ) {
+    console.log(fimExec.current);
+    if (fimExec.current && !isLoadingRef.current) {
       fetchTeams();
     }
   }, [
@@ -107,8 +114,7 @@ const Stats = () => {
     GameType,
     valueNamePlayer,
     valuePlayerVal,
-    page,
-    totalPages
+    page
   ]);
 
   React.useEffect(() => {
@@ -171,6 +177,7 @@ const Stats = () => {
     }
     console.log(updatedValue);
     setValueNamePlayer(updatedValue);
+    fimExec.current = true;
   };
 
   const handleValueValPlayerChange = (newValue, index) => {
