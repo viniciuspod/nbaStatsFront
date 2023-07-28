@@ -212,7 +212,7 @@ const Stats = () => {
         <Grid container>
           <Grid item xs={12} pt={4}>
             <Sheet sx={{ height: "30rem", borderRadius: "sm" }}>
-              <ContainerChartLine data={dataChart} />
+              <ContainerChartLine data={dataChart} playerVal={valuePlayerVal} />
             </Sheet>
           </Grid>
           <Grid item xs={12} pt={4}>
